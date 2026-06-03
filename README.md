@@ -1,5 +1,7 @@
 # MuMain Launcher
 
+*[Wersja polska](Readme.pl.md)*
+
 Cross-platform launcher and auto-updater for the [MuMain](https://github.com/sven-n/MuMain)
 game client. It keeps a player's client files in sync with a patch server over
 HTTP(S), then starts the client.
