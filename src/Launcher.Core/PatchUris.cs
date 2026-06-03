@@ -24,8 +24,16 @@ public static class PatchUris
     public static Uri ResolveSiblingUri(Uri manifestUrl, string filePath) =>
         new(manifestUrl, EscapeRelativePath(filePath));
 
-    private static string EnsureTrailingSlash(string baseUrl) =>
-        baseUrl.EndsWith('/') ? baseUrl : baseUrl + "/";
+    private static string EnsureTrailingSlash(string baseUrl)
+    {
+        // An empty base URL means the files sit next to the manifest itself.
+        if (string.IsNullOrEmpty(baseUrl))
+        {
+            return baseUrl;
+        }
+
+        return baseUrl.EndsWith('/') ? baseUrl : baseUrl + "/";
+    }
 
     private static string EscapeRelativePath(string filePath)
     {

@@ -39,3 +39,11 @@ local .NET SDK install.
 `publish` produces `out/launcher/` containing both launcher binaries and
 `launcher.json`. Upload that directory to the patch host: the launcher reads
 `launcher.json` to update itself before updating the client.
+
+## Documentation
+
+- [Releasing updates](docs/releasing-updates.md) — admin workflow: configuring
+  the patch URLs, publishing a client update, publishing a new launcher, and the
+  server directory layout.
+- [Manifest format](docs/manifest-format.md) — reference for `version.json` and
+  `launcher.json`.

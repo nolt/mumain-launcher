@@ -1,0 +1,76 @@
+# Releasing updates
+
+How a server admin publishes client updates and new launcher versions. All builds
+run in the .NET SDK container via `./build.sh`, so the host only needs Docker.
+
+## One-time configuration
+
+The launcher is built for one specific server, so the patch URLs are baked in.
+Before building, set them in
+[`src/Launcher.Core/LauncherConfig.cs`](../src/Launcher.Core/LauncherConfig.cs):
+
+- `ManifestUrl` — full URL of the client manifest, e.g. `https://patch.yourserver.pl/version.json`
+- `LauncherManifestUrl` — full URL of the launcher manifest, e.g. `https://patch.yourserver.pl/launcher.json`
+
+Use a domain you control (not a raw IP). If you ever move the patch host, you
+only change DNS — the baked URL keeps working.
+
+## Server layout
+
+Client files sit next to the manifests in one web directory:
+
+```
+https://patch.yourserver.pl/
+├── version.json          ← client manifest
+├── launcher.json         ← launcher manifest
+├── Launcher.App.exe      ← launcher binary (Windows)
+├── Launcher.App          ← launcher binary (Linux)
+├── main.exe              ← client files…
+└── Data/
+```
+
+Any static host works (nginx, Apache, object storage). HTTPS is recommended.
+
+## Releasing a client update
+
+1. Build the client (in the MuMain repo) to produce its release directory.
+2. Generate the manifest over that directory:
+
+   ```sh
+   ./build.sh manifest --input /path/to/client/build
+   ```
+
+   This writes `version.json` into that directory. The version defaults to
+   today's date; override with `--version 2026.06.10`.
+3. Upload the **contents** of the client directory (including `version.json`) to
+   the web directory above.
+
+Players' launchers compare each file's hash and download only what changed.
+Player-specific files (`config.ini`, logs) are never listed, so they are left
+untouched. The launcher only adds and updates — it never deletes.
+
+## Releasing a new launcher
+
+1. Publish both binaries and the launcher manifest:
+
+   ```sh
+   ./build.sh publish 2026.06.10
+   ```
+
+   This produces `out/launcher/` with `Launcher.App.exe`, `Launcher.App` and
+   `launcher.json` (version stamped into the binaries).
+2. Upload the contents of `out/launcher/` to the web directory.
+
+On next start, each launcher compares its own version to `launcher.json`; if it
+differs, it downloads the matching binary, verifies it, swaps itself out and
+restarts — before updating the client. Self-update is best-effort: if it can't
+complete, the launcher keeps running and still updates the client.
+
+For a **breaking** launcher change, also publish the new launcher on your
+website so players can re-download it directly.
+
+## Player experience
+
+Players download the launcher once from your website and run it from the client
+folder. It updates itself, updates the client, then enables **PLAY**. On Windows
+the client starts directly; on Linux it starts through Wine.

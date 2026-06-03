@@ -8,7 +8,8 @@ namespace PatchManifest;
 /// </summary>
 public static class CommandLineParser
 {
-    private const string DefaultBaseUrl = "files/";
+    // Empty by default: client files are hosted next to version.json on the server.
+    private const string DefaultBaseUrl = "";
     private const string DefaultManifestFileName = "version.json";
     private const string VersionDateFormat = "yyyy.MM.dd";
 

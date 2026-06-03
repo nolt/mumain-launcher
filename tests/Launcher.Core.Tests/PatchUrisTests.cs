@@ -46,6 +46,16 @@ public class PatchUrisTests
     }
 
     [Fact]
+    public void ResolveFileUri_WithEmptyBaseUrl_ResolvesNextToManifest()
+    {
+        var manifest = new Uri("https://patch.example.com/version.json");
+
+        var uri = PatchUris.ResolveFileUri(manifest, "", "Data/Player/player.bmd");
+
+        Assert.Equal("https://patch.example.com/Data/Player/player.bmd", uri.AbsoluteUri);
+    }
+
+    [Fact]
     public void ResolveSiblingUri_ResolvesNextToManifest()
     {
         var manifest = new Uri("https://patch.example.com/launcher.json");

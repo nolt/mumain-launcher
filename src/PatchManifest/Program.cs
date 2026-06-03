@@ -62,7 +62,8 @@ static void PrintUsage()
 
           --input     Release directory to scan (required).
           --output    Manifest file to write (default: <input>/version.json).
-          --base-url  Location of files relative to the manifest (default: files/).
+          --base-url  Location of files relative to the manifest (default: empty,
+                      i.e. files sit next to version.json).
           --version   Release tag (default: today's UTC date, yyyy.MM.dd).
           --exclude   Extra file-name glob to skip (repeatable).
         """);
