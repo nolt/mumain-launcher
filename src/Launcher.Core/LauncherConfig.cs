@@ -18,8 +18,12 @@ public static class LauncherConfig
     /// <summary>Full URL of the launcher self-update manifest (launcher.json).</summary>
     public const string LauncherManifestUrl = "https://patch.example.com/launcher.json";
 
-    /// <summary>Client executable started after the update completes.</summary>
-    public const string ClientExecutableName = "main.exe";
+    /// <summary>
+    /// Client executable started after the update completes. Case matters: the
+    /// CMake target produces "Main.exe", and the native Linux launcher passes
+    /// this name to a case-sensitive filesystem.
+    /// </summary>
+    public const string ClientExecutableName = "Main.exe";
 
     /// <summary>
     /// Directory that holds the client files. The launcher lives in the client
