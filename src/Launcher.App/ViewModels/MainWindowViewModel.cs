@@ -1,4 +1,5 @@
 using Launcher.Core;
+using Launcher.Core.SelfUpdate;
 
 namespace Launcher.App.ViewModels;
 
@@ -11,7 +12,9 @@ public sealed class MainWindowViewModel : ViewModelBase
 {
     private readonly ClientUpdater _updater;
     private readonly ClientLauncher _launcher;
+    private readonly LauncherSelfUpdater _selfUpdater;
     private readonly Action _closeWindow;
+    private readonly Action _restart;
     private readonly CancellationTokenSource _cancellation = new();
 
     private string _statusText = "Starting…";
@@ -20,11 +23,13 @@ public sealed class MainWindowViewModel : ViewModelBase
     private bool _canPlay;
     private bool _canRetry;
 
-    public MainWindowViewModel(ClientUpdater updater, ClientLauncher launcher, Action closeWindow)
+    public MainWindowViewModel(ClientUpdater updater, ClientLauncher launcher, LauncherSelfUpdater selfUpdater, Action closeWindow, Action restart)
     {
         _updater = updater;
         _launcher = launcher;
+        _selfUpdater = selfUpdater;
         _closeWindow = closeWindow;
+        _restart = restart;
         PlayCommand = new RelayCommand(Play, () => CanPlay);
         RetryCommand = new RelayCommand(() => _ = RunUpdateAsync(), () => CanRetry);
     }
@@ -91,6 +96,13 @@ public sealed class MainWindowViewModel : ViewModelBase
         var progress = new Progress<UpdateProgress>(OnProgress);
         try
         {
+            StatusText = "Updating launcher…";
+            if (await _selfUpdater.TryUpdateAsync(_cancellation.Token))
+            {
+                _restart();
+                return;
+            }
+
             var result = await _updater.UpdateAsync(progress, _cancellation.Token);
             IsProgressIndeterminate = false;
             ProgressValue = 100;

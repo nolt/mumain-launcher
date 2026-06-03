@@ -44,4 +44,14 @@ public class PatchUrisTests
 
         Assert.Equal("https://patch.example.com/season6/files/main.exe", uri.AbsoluteUri);
     }
+
+    [Fact]
+    public void ResolveSiblingUri_ResolvesNextToManifest()
+    {
+        var manifest = new Uri("https://patch.example.com/launcher.json");
+
+        var uri = PatchUris.ResolveSiblingUri(manifest, "Launcher.App.exe");
+
+        Assert.Equal("https://patch.example.com/Launcher.App.exe", uri.AbsoluteUri);
+    }
 }

@@ -4,10 +4,11 @@
 # never needs the .NET SDK installed (same approach as the OpenMU docker build).
 #
 # Usage:
-#   ./build.sh                 # build the whole solution (Release)
-#   ./build.sh manifest ARGS…  # run the manifest generator with ARGS
-#   ./build.sh publish         # publish self-contained launcher for win-x64 + linux-x64 into ./out
-#   ./build.sh <dotnet args…>  # passthrough: run any dotnet command in the container
+#   ./build.sh                   # build the whole solution (Release)
+#   ./build.sh manifest ARGS…    # run the manifest generator with ARGS
+#   ./build.sh publish [VERSION] # publish self-contained launcher for win-x64 + linux-x64
+#                                #   (VERSION defaults to today's date) and write launcher.json
+#   ./build.sh <dotnet args…>    # passthrough: run any dotnet command in the container
 #
 set -euo pipefail
 
@@ -15,9 +16,29 @@ IMAGE="mcr.microsoft.com/dotnet/sdk:10.0"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOLUTION="MumainLauncher.slnx"
 RIDS=(win-x64 linux-x64)
+LAUNCHER_DIR="$ROOT/out/launcher"
 
 run() {
     docker run --rm -v "$ROOT":/src -w /src "$IMAGE" "$@"
+}
+
+# Writes out/launcher/launcher.json describing both published binaries (siblings of the manifest).
+write_launcher_manifest() {
+    local version="$1"
+    local win_hash win_size lin_hash lin_size
+    win_hash=$(sha256sum "$LAUNCHER_DIR/Launcher.App.exe" | cut -d' ' -f1)
+    win_size=$(stat -c%s "$LAUNCHER_DIR/Launcher.App.exe")
+    lin_hash=$(sha256sum "$LAUNCHER_DIR/Launcher.App" | cut -d' ' -f1)
+    lin_size=$(stat -c%s "$LAUNCHER_DIR/Launcher.App")
+    cat > "$LAUNCHER_DIR/launcher.json" <<EOF
+{
+  "version": "$version",
+  "files": {
+    "win-x64": { "path": "Launcher.App.exe", "hash": "$win_hash", "size": $win_size },
+    "linux-x64": { "path": "Launcher.App", "hash": "$lin_hash", "size": $lin_size }
+  }
+}
+EOF
 }
 
 cmd="${1:-build}"
@@ -30,11 +51,17 @@ case "$cmd" in
         run dotnet run --project src/PatchManifest -c Release -- "$@"
         ;;
     publish)
+        version="${2:-$(date +%Y.%m.%d)}"
+        mkdir -p "$LAUNCHER_DIR"
         for rid in "${RIDS[@]}"; do
-            echo "==> publishing Launcher.App for $rid"
+            echo "==> publishing Launcher.App $version for $rid"
             run dotnet publish src/Launcher.App -c Release -r "$rid" \
-                --self-contained -p:PublishSingleFile=true -o "out/$rid"
+                --self-contained -p:PublishSingleFile=true -p:Version="$version" -o "out/$rid"
         done
+        cp "$ROOT/out/win-x64/Launcher.App.exe" "$LAUNCHER_DIR/"
+        cp "$ROOT/out/linux-x64/Launcher.App" "$LAUNCHER_DIR/"
+        write_launcher_manifest "$version"
+        echo "==> wrote $LAUNCHER_DIR/launcher.json (version $version)"
         ;;
     *)
         run dotnet "$@"

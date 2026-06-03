@@ -17,6 +17,13 @@ public static class PatchUris
         return new Uri(baseUri, EscapeRelativePath(filePath));
     }
 
+    /// <summary>
+    /// Resolves a file that sits next to the manifest itself (no base URL), used
+    /// for launcher binaries listed alongside <c>launcher.json</c>.
+    /// </summary>
+    public static Uri ResolveSiblingUri(Uri manifestUrl, string filePath) =>
+        new(manifestUrl, EscapeRelativePath(filePath));
+
     private static string EnsureTrailingSlash(string baseUrl) =>
         baseUrl.EndsWith('/') ? baseUrl : baseUrl + "/";
 

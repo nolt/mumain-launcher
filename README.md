@@ -29,8 +29,13 @@ The build runs inside a .NET SDK container, so the host needs only Docker — no
 local .NET SDK install.
 
 ```sh
-./build.sh                 # build the whole solution (Release)
-./build.sh manifest ARGS…  # run the manifest generator
-./build.sh publish         # self-contained launcher for win-x64 + linux-x64 into ./out
-./build.sh <dotnet args…>  # passthrough to dotnet inside the container
+./build.sh                   # build the whole solution (Release)
+./build.sh manifest ARGS…    # run the manifest generator
+./build.sh publish [VERSION] # self-contained launcher for win-x64 + linux-x64 into ./out,
+                             #   plus out/launcher/launcher.json (VERSION defaults to today)
+./build.sh <dotnet args…>    # passthrough to dotnet inside the container
 ```
+
+`publish` produces `out/launcher/` containing both launcher binaries and
+`launcher.json`. Upload that directory to the patch host: the launcher reads
+`launcher.json` to update itself before updating the client.
