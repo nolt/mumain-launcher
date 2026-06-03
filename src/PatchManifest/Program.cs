@@ -1,4 +1,3 @@
-using System.Globalization;
 using Launcher.Core;
 using PatchManifest;
 
@@ -49,24 +48,8 @@ static void PrintSummary(Manifest manifest, string outputFile)
     }
 
     Console.WriteLine($"Version:    {manifest.Version}");
-    Console.WriteLine($"Files:      {manifest.Files.Count} ({FormatSize(totalBytes)})");
+    Console.WriteLine($"Files:      {manifest.Files.Count} ({ByteSizeFormatter.Format(totalBytes)})");
     Console.WriteLine($"Manifest:   {outputFile}");
-}
-
-static string FormatSize(long bytes)
-{
-    const double Unit = 1024.0;
-    string[] units = ["B", "KB", "MB", "GB", "TB"];
-
-    double size = bytes;
-    var unitIndex = 0;
-    while (size >= Unit && unitIndex < units.Length - 1)
-    {
-        size /= Unit;
-        unitIndex++;
-    }
-
-    return string.Create(CultureInfo.InvariantCulture, $"{size:0.##} {units[unitIndex]}");
 }
 
 static void PrintUsage()

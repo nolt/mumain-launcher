@@ -1,9 +1,36 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="using:Launcher.App.ViewModels"
         x:Class="Launcher.App.MainWindow"
-        Title="Launcher.App">
-    Welcome to Avalonia!
+        x:DataType="vm:MainWindowViewModel"
+        Title="MuMain Launcher"
+        Width="520" Height="300"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid RowDefinitions="*,Auto,Auto" Margin="28">
+
+        <TextBlock Grid.Row="0"
+                   Text="MuMain Launcher"
+                   FontSize="30" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <StackPanel Grid.Row="1" Spacing="8" Margin="0,0,0,20">
+            <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap" />
+            <ProgressBar Minimum="0" Maximum="100"
+                         Value="{Binding ProgressValue}"
+                         IsIndeterminate="{Binding IsProgressIndeterminate}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Spacing="12">
+            <Button Content="Retry"
+                    Command="{Binding RetryCommand}"
+                    IsVisible="{Binding CanRetry}" />
+            <Button Content="PLAY"
+                    Command="{Binding PlayCommand}"
+                    IsEnabled="{Binding CanPlay}"
+                    Width="130" />
+        </StackPanel>
+    </Grid>
 </Window>
