@@ -4,4 +4,7 @@
     <Project Path="src/Launcher.Core/Launcher.Core.csproj" />
     <Project Path="src/PatchManifest/PatchManifest.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Launcher.Core.Tests/Launcher.Core.Tests.csproj" />
+  </Folder>
 </Solution>
