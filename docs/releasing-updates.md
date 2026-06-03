@@ -74,3 +74,23 @@ website so players can re-download it directly.
 Players download the launcher once from your website and run it from the client
 folder. It updates itself, updates the client, then enables **PLAY**. On Windows
 the client starts directly; on Linux it starts through Wine.
+
+### Linux: choosing a Wine prefix or binary
+
+On Linux the launcher starts the client with `wine Main.exe`, resolved in the
+client folder. By default it uses `wine` and whatever `WINEPREFIX` is set in the
+environment (so `WINEPREFIX=… ./MumainLauncher` just works — the launcher runs
+natively and passes the prefix through to Wine).
+
+For players who launch from a desktop icon, or who want a specific Wine build,
+drop a `launcher.local.json` next to the launcher:
+
+```json
+{
+  "winePrefix": "/home/user/.winetestowe",
+  "wineCommand": "wine"
+}
+```
+
+Both fields are optional. This file is per-machine and is never downloaded or
+overwritten by the updater.
