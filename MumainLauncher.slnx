@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Launcher.App/Launcher.App.csproj" />
+    <Project Path="src/Launcher.Core/Launcher.Core.csproj" />
+    <Project Path="src/PatchManifest/PatchManifest.csproj" />
+  </Folder>
+</Solution>
