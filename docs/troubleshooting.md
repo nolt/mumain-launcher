@@ -6,7 +6,8 @@ Real issues hit while building and running the launcher, with the fix for each.
 
 ## Linux: run the launcher directly, not through Wine
 
-`Launcher.App` (the Linux build) is a **native ELF**. Run it directly:
+The Linux launcher (`MumainLauncher`, or whatever `LAUNCHER_NAME` you chose) is a
+**native ELF**. Run it directly:
 
 ```sh
 ./MumainLauncher

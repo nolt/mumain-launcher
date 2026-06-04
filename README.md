@@ -42,13 +42,14 @@ host, use Docker Desktop and run `build.sh` from Git Bash/WSL.
 # 2. (optional) Brand it — colours, background, name, size
 #    src/Launcher.App/Branding/Branding.axaml  +  src/Launcher.App/Assets/
 
-# 3. Build the launcher binaries
+# 3. Build the launcher binaries (file name defaults to MumainLauncher;
+#    brand it per server with LAUNCHER_NAME, e.g. LAUNCHER_NAME=MyServer ./build.sh publish 2026.06.10)
 ./build.sh publish 2026.06.10
 
-# 4. Take the binaries out of ./out/launcher/
-#    Launcher.App.exe  → Windows players       (rename e.g. to MumainLauncher.exe)
-#    Launcher.App      → Linux players          (rename e.g. to MumainLauncher)
-#    launcher.json     → upload to the patch host for self-update
+# 4. Take the binaries out of ./out/launcher/  (named after LAUNCHER_NAME)
+#    MumainLauncher.exe → Windows players
+#    MumainLauncher     → Linux players
+#    launcher.json      → upload to the patch host for self-update
 
 # 5. Generate the client manifest over your built client and upload everything
 ./build.sh manifest --input /path/to/client

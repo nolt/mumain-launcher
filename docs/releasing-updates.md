@@ -25,9 +25,9 @@ Client files sit next to the manifests in one web directory:
 https://patch.yourserver.pl/
 ├── version.json          ← client manifest
 ├── launcher.json         ← launcher manifest
-├── Launcher.App.exe      ← launcher binary (Windows)
-├── Launcher.App          ← launcher binary (Linux)
-├── main.exe              ← client files…
+├── MumainLauncher.exe    ← launcher binary (Windows; name = LAUNCHER_NAME)
+├── MumainLauncher        ← launcher binary (Linux; name = LAUNCHER_NAME)
+├── Main.exe              ← client files…
 └── Data/
 ```
 
@@ -59,8 +59,10 @@ untouched. The launcher only adds and updates — it never deletes.
    ./build.sh publish 2026.06.10
    ```
 
-   This produces `out/launcher/` with `Launcher.App.exe`, `Launcher.App` and
-   `launcher.json` (version stamped into the binaries).
+   This produces `out/launcher/` with `MumainLauncher.exe`, `MumainLauncher` and
+   `launcher.json` (the binary name follows `LAUNCHER_NAME`, default
+   `MumainLauncher`; version stamped into the binaries). Override per server:
+   `LAUNCHER_NAME=MyServer ./build.sh publish 2026.06.10`.
 2. Upload the contents of `out/launcher/` to the web directory.
 
 On next start, each launcher compares its own version to `launcher.json`; if it

@@ -46,8 +46,8 @@ Describes the latest launcher build, one binary per runtime identifier.
 {
   "version": "2026.06.10",
   "files": {
-    "win-x64":   { "path": "Launcher.App.exe", "hash": "…", "size": 84283805 },
-    "linux-x64": { "path": "Launcher.App",      "hash": "…", "size": 84378611 }
+    "win-x64":   { "path": "MumainLauncher.exe", "hash": "…", "size": 49655545 },
+    "linux-x64": { "path": "MumainLauncher",      "hash": "…", "size": 49332195 }
   }
 }
 ```
@@ -58,4 +58,6 @@ Rules:
   (`build.sh publish [VERSION]` keeps them in sync). The launcher updates itself
   whenever its own version differs from this.
 - **`files`** keys are runtime identifiers (`win-x64`, `linux-x64`). Each `path`
-  is resolved next to `launcher.json`. `hash` is verified after download.
+  is resolved next to `launcher.json` and follows `LAUNCHER_NAME` (default
+  `MumainLauncher`); the uploaded files must be named to match. `hash` is verified
+  after download.

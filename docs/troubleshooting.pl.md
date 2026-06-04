@@ -6,7 +6,8 @@ Realne problemy napotkane przy budowaniu i uruchamianiu launchera, z rozwiązani
 
 ## Linux: uruchamiaj launcher bezpośrednio, nie przez Wine
 
-`Launcher.App` (wersja linuksowa) to **natywny ELF**. Uruchamiaj go wprost:
+Linuksowy launcher (`MumainLauncher`, lub jakkolwiek nazwałeś go przez
+`LAUNCHER_NAME`) to **natywny ELF**. Uruchamiaj go wprost:
 
 ```sh
 ./MumainLauncher

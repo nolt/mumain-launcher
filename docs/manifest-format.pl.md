@@ -46,8 +46,8 @@ Opisuje najnowszy build launchera, jedna binarka na identyfikator środowiska.
 {
   "version": "2026.06.10",
   "files": {
-    "win-x64":   { "path": "Launcher.App.exe", "hash": "…", "size": 84283805 },
-    "linux-x64": { "path": "Launcher.App",      "hash": "…", "size": 84378611 }
+    "win-x64":   { "path": "MumainLauncher.exe", "hash": "…", "size": 49655545 },
+    "linux-x64": { "path": "MumainLauncher",      "hash": "…", "size": 49332195 }
   }
 }
 ```
@@ -58,5 +58,6 @@ Zasady:
   (`build.sh publish [WERSJA]` trzyma je w zgodzie). Launcher aktualizuje siebie,
   ilekroć jego wersja różni się od tej.
 - **`files`** — klucze to identyfikatory środowiska (`win-x64`, `linux-x64`). Każdy
-  `path` jest rozwiązywany obok `launcher.json`. `hash` jest weryfikowany po
-  pobraniu.
+  `path` jest rozwiązywany obok `launcher.json` i zależy od `LAUNCHER_NAME`
+  (domyślnie `MumainLauncher`); wgrane pliki muszą mieć pasującą nazwę. `hash` jest
+  weryfikowany po pobraniu.

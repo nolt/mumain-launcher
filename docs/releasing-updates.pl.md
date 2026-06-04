@@ -26,9 +26,9 @@ Pliki klienta leżą obok manifestów w jednym katalogu webowym:
 https://patch.twojserwer.pl/
 ├── version.json          ← manifest klienta
 ├── launcher.json         ← manifest launchera
-├── Launcher.App.exe      ← binarka launchera (Windows)
-├── Launcher.App          ← binarka launchera (Linux)
-├── main.exe              ← pliki klienta…
+├── MumainLauncher.exe    ← binarka launchera (Windows; nazwa = LAUNCHER_NAME)
+├── MumainLauncher        ← binarka launchera (Linux; nazwa = LAUNCHER_NAME)
+├── Main.exe              ← pliki klienta…
 └── Data/
 ```
 
@@ -61,8 +61,10 @@ usuwa.
    ./build.sh publish 2026.06.10
    ```
 
-   To tworzy `out/launcher/` z `Launcher.App.exe`, `Launcher.App` oraz
-   `launcher.json` (wersja wpisana w binarki).
+   To tworzy `out/launcher/` z `MumainLauncher.exe`, `MumainLauncher` oraz
+   `launcher.json` (nazwa binarki zależy od `LAUNCHER_NAME`, domyślnie
+   `MumainLauncher`; wersja wpisana w binarki). Nadpisz per serwer:
+   `LAUNCHER_NAME=MojSerwer ./build.sh publish 2026.06.10`.
 2. Wgraj zawartość `out/launcher/` do katalogu webowego.
 
 Przy następnym starcie każdy launcher porównuje swoją wersję z `launcher.json`;

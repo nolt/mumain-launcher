@@ -37,16 +37,32 @@ budowania pojawiają się w Twoim drzewie roboczym, jakby budowane lokalnie.
 
 ```
 out/
-├── win-x64/Launcher.App.exe       # surowy single-file publish (Windows)
-├── linux-x64/Launcher.App         # surowy single-file publish (Linux)
+├── win-x64/Launcher.App.exe       # surowy single-file publish (nazwa wewnętrzna)
+├── linux-x64/Launcher.App         # surowy single-file publish (nazwa wewnętrzna)
 └── launcher/
-    ├── Launcher.App.exe           # ← launcher Windows do rozdania
-    ├── Launcher.App               # ← launcher Linux do rozdania
+    ├── MumainLauncher.exe         # ← launcher Windows do rozdania
+    ├── MumainLauncher             # ← launcher Linux do rozdania
     └── launcher.json              # ← manifest samo-aktualizacji (wersja + hashe)
 ```
 
 **Używaj folderu `out/launcher/`** — ma obie gotowe binarki plus manifest
-samo-aktualizacji, wszystko ze zgodną wersją/hashami.
+samo-aktualizacji, wszystko ze zgodną nazwą, wersją i hashami. Jest czyszczony na
+początku każdego `publish`, więc nie trzyma starych binarek.
+
+## Nazwa launchera
+
+Nazwa pliku do rozdania pochodzi z `LAUNCHER_NAME` (domyślnie `MumainLauncher`).
+Zbranduj ją per serwer — edytując domyślną wartość u góry `build.sh` albo per uruchomienie:
+
+```sh
+LAUNCHER_NAME=MojSerwer ./build.sh publish 1.0.0
+# → out/launcher/MojSerwer.exe, MojSerwer, launcher.json (ścieżki wskazują na MojSerwer*)
+```
+
+Wewnętrzna nazwa assembly zostaje `Launcher.App` (niewidoczna dla graczy); zmienia
+się tylko nazwa pliku do rozdania i ścieżki w `launcher.json`, więc wbudowane
+zasoby działają dalej. Jakąkolwiek nazwę wybierzesz, ścieżki w `launcher.json`
+do niej pasują — wgrane pliki nazwij tak samo, aby samo-aktualizacja je znalazła.
 
 Każda binarka jest **samodzielna** (~47 MB): środowisko .NET i biblioteki natywne
 (Skia, HarfBuzz) są wbudowane i rozpakowywane przy pierwszym uruchomieniu. Gracze
@@ -57,8 +73,12 @@ gry*, a nie launcher.
 
 | Plik | Kto uruchamia | Uwagi |
 | ---- | ------------- | ----- |
-| `Launcher.App.exe` | gracze Windows | Zmieniaj nazwę dowolnie, np. `MumainLauncher.exe`. |
-| `Launcher.App` | gracze Linux | Zmieniaj nazwę dowolnie, np. `MumainLauncher`. Natywny ELF — **uruchamiaj bezpośrednio**, nie przez Wine (patrz [Rozwiązywanie problemów](troubleshooting.pl.md)). |
+(Nazwy plików niżej zakładają domyślne `MumainLauncher`; zależą od `LAUNCHER_NAME`.)
+
+| Plik | Kto uruchamia | Uwagi |
+| ---- | ------------- | ----- |
+| `MumainLauncher.exe` | gracze Windows | Gotowy do rozdania bez zmian. |
+| `MumainLauncher` | gracze Linux | Natywny ELF — **uruchamiaj bezpośrednio**, nie przez Wine (patrz [Rozwiązywanie problemów](troubleshooting.pl.md)). |
 | `launcher.json` | serwer patchy | Wgraj obok binarek, aby launcher mógł się samo-aktualizować. |
 
 Gracze umieszczają launcher **w folderze klienta** i stamtąd go uruchamiają;

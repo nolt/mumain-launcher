@@ -36,16 +36,32 @@ build outputs appear in your working tree as if built locally.
 
 ```
 out/
-├── win-x64/Launcher.App.exe       # raw single-file publish (Windows)
-├── linux-x64/Launcher.App         # raw single-file publish (Linux)
+├── win-x64/Launcher.App.exe       # raw single-file publish (internal name)
+├── linux-x64/Launcher.App         # raw single-file publish (internal name)
 └── launcher/
-    ├── Launcher.App.exe           # ← the Windows launcher to ship
-    ├── Launcher.App               # ← the Linux launcher to ship
+    ├── MumainLauncher.exe         # ← the Windows launcher to ship
+    ├── MumainLauncher             # ← the Linux launcher to ship
     └── launcher.json              # ← self-update manifest (version + hashes)
 ```
 
 **Use the `out/launcher/` folder** — it holds both ready binaries plus the
-self-update manifest, all with matching version/hashes.
+self-update manifest, all with matching name, version and hashes. It is wiped at
+the start of every `publish`, so it never keeps stale binaries.
+
+## Naming the launcher
+
+The shipped file name comes from `LAUNCHER_NAME` (default `MumainLauncher`). Brand
+it per server, either by editing the default near the top of `build.sh` or per run:
+
+```sh
+LAUNCHER_NAME=MyServer ./build.sh publish 1.0.0
+# → out/launcher/MyServer.exe, MyServer, launcher.json (paths point to MyServer*)
+```
+
+The internal assembly name stays `Launcher.App` (invisible to players); only the
+distributable file name and the `launcher.json` paths change, so embedded assets
+keep working. Whatever name you choose, the `launcher.json` paths match it — keep
+the uploaded files named the same so self-update finds them.
 
 Each binary is **self-contained** (~47 MB): the .NET runtime and native libraries
 (Skia, HarfBuzz) are embedded and unpacked on first run. Players need nothing
@@ -54,10 +70,12 @@ launcher.
 
 ## Extracting & shipping
 
+(File names below assume the default `MumainLauncher`; they follow `LAUNCHER_NAME`.)
+
 | File | Who runs it | Notes |
 | ---- | ----------- | ----- |
-| `Launcher.App.exe` | Windows players | Rename freely, e.g. `MumainLauncher.exe`. |
-| `Launcher.App` | Linux players | Rename freely, e.g. `MumainLauncher`. Native ELF — **run it directly**, not through Wine (see [Troubleshooting](troubleshooting.md)). |
+| `MumainLauncher.exe` | Windows players | Ready to ship as-is. |
+| `MumainLauncher` | Linux players | Native ELF — **run it directly**, not through Wine (see [Troubleshooting](troubleshooting.md)). |
 | `launcher.json` | the patch host | Upload next to the binaries so the launcher can self-update. |
 
 Players put the launcher **inside the client folder** and run it from there; it
