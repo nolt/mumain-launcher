@@ -75,6 +75,19 @@ Players download the launcher once from your website and run it from the client
 folder. It updates itself, updates the client, then enables **PLAY**. On Windows
 the client starts directly; on Linux it starts through Wine.
 
+### Linux: run the native launcher directly
+
+On Linux, use the native launcher binary `MumainLauncher` and run it **directly**:
+
+```sh
+./MumainLauncher
+```
+
+Do **not** run it through Wine. `MumainLauncher` is a native Linux program — `wine
+MumainLauncher` cannot run it, and the `MumainLauncher.exe` build is only for real
+Windows. (Running the launcher under Wine also breaks its networking, so updates
+fail to download.) The launcher then starts the *client* through Wine for you.
+
 ### Linux: choosing a Wine prefix or binary
 
 On Linux the launcher starts the client with `wine Main.exe`, resolved in the
