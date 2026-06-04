@@ -97,26 +97,40 @@
 
             <Grid RowDefinitions="Auto,*,Auto">
 
-                <!-- Title bar: scrim + title (drag handle) with caption buttons on top. -->
+                <!-- Title bar (drag handle). Content depends on BrandTitleMode:
+                     Text = name + subtitle, Logo = Assets/logo.png, None = bare
+                     background. All three stay in the XAML; visibility is bound, so
+                     switching modes is a one-line branding change, not surgery.
+                     The overlays are non-hit-test so the whole strip stays draggable. -->
                 <Panel Grid.Row="0">
-                    <Border Name="TitleBar"
-                            Background="{DynamicResource BrandTitleScrimBrush}"
-                            Padding="0,58,0,36"
+                    <Border Name="TitleBar" Background="Transparent" MinHeight="64"
                             PointerPressed="OnTitleBarPressed">
-                        <StackPanel HorizontalAlignment="Center" Spacing="2">
-                            <TextBlock Text="{DynamicResource BrandServerName}"
-                                       Foreground="{DynamicResource BrandGoldBrush}"
-                                       FontSize="34" FontWeight="Bold" LetterSpacing="6"
-                                       HorizontalAlignment="Center">
-                                <TextBlock.Effect>
-                                    <DropShadowEffect Color="#FF000000" BlurRadius="10" OffsetX="0" OffsetY="1" />
-                                </TextBlock.Effect>
-                            </TextBlock>
-                            <TextBlock Text="{DynamicResource BrandSubtitle}"
-                                       Foreground="{DynamicResource BrandTextDimBrush}"
-                                       FontSize="14" LetterSpacing="5"
-                                       HorizontalAlignment="Center" />
-                        </StackPanel>
+                        <Panel>
+                            <Border Background="{DynamicResource BrandTitleScrimBrush}"
+                                    IsVisible="{Binding ShowTitleArea}" IsHitTestVisible="False" />
+
+                            <StackPanel IsVisible="{Binding ShowTextTitle}" IsHitTestVisible="False"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Margin="0,52,0,30" Spacing="2">
+                                <TextBlock Text="{DynamicResource BrandServerName}"
+                                           Foreground="{DynamicResource BrandGoldBrush}"
+                                           FontSize="34" FontWeight="Bold" LetterSpacing="6"
+                                           HorizontalAlignment="Center">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" OffsetX="0" OffsetY="1" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                <TextBlock Text="{DynamicResource BrandSubtitle}"
+                                           Foreground="{DynamicResource BrandTextDimBrush}"
+                                           FontSize="14" LetterSpacing="5"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+
+                            <Image IsVisible="{Binding ShowLogo}" IsHitTestVisible="False"
+                                   Source="avares://Launcher.App/Assets/logo.png"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="0,44,0,26" MaxHeight="84" Stretch="Uniform" />
+                        </Panel>
                     </Border>
 
                     <!-- Settings (gear): top-left, same level as the caption buttons. -->

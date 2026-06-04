@@ -55,6 +55,14 @@ public sealed class MainWindowViewModel : ViewModelBase
         private set => SetField(ref _isSettingsOpen, value);
     }
 
+    // Title area driven by the BrandTitleMode branding resource (Text | Logo | None).
+    // Constant per build, so plain getters (no change notification needed).
+    public bool ShowTitleArea => !IsTitleMode("None");
+
+    public bool ShowTextTitle => IsTitleMode("Text");
+
+    public bool ShowLogo => IsTitleMode("Logo");
+
     public string StatusText
     {
         get => _statusText;
@@ -199,4 +207,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     private static string Format(string key, string fallback, params object[] args) =>
         string.Format(CultureInfo.CurrentCulture, Text(key, fallback), args);
+
+    private static bool IsTitleMode(string mode) =>
+        string.Equals(Text("BrandTitleMode", "Text"), mode, StringComparison.OrdinalIgnoreCase);
 }

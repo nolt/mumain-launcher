@@ -65,6 +65,20 @@ Zmień trzy kolory `BrandGold*`. Przykład — motyw czerwony:
 <Color x:Key="BrandGoldHighlightColor">#FFE74C3C</Color>
 ```
 
+### Tytuł: tekst, logo albo samo tło
+
+`BrandTitleMode` decyduje, co pokazuje się na górze okna:
+
+| `BrandTitleMode` | Góra okna |
+|------------------|-----------|
+| `Text` (domyślnie) | `BrandServerName` + `BrandSubtitle` |
+| `Logo`             | obraz z [`Assets/logo.png`](../src/Launcher.App/Assets) — podmień na własny (przezroczysty PNG, ~3:1, ≤ ~520 px szerokości) |
+| `None`             | nic — samo tło (użyj, gdy grafika tła ma już wbudowany tytuł) |
+
+Okno pozostaje przeciągalne, a przyciski koła zębatego / minimalizacji / zamknięcia
+działają w każdym trybie — przełączenie to zmiana jednej linii, nic nie jest
+usuwane z układu.
+
 ## 2. Grafika tła — `Assets/background.jpg`
 
 Podmień [`src/Launcher.App/Assets/background.jpg`](../src/Launcher.App/Assets)

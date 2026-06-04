@@ -64,6 +64,19 @@ Change the three `BrandGold*` colours. Example — a red theme:
 <Color x:Key="BrandGoldHighlightColor">#FFE74C3C</Color>
 ```
 
+### Title: text, logo, or just the background
+
+`BrandTitleMode` picks what shows at the top of the window:
+
+| `BrandTitleMode` | Top of the window |
+|------------------|-------------------|
+| `Text` (default) | `BrandServerName` + `BrandSubtitle` |
+| `Logo`           | the image in [`Assets/logo.png`](../src/Launcher.App/Assets) — replace it with your own (transparent PNG, ~3:1, ≤ ~520 px wide) |
+| `None`           | nothing — just the background art (use when your background already contains the title) |
+
+The window stays draggable and the gear / minimise / close buttons stay in every
+mode — switching is a one-line change, nothing is removed from the layout.
+
 ## 2. Background art — `Assets/background.jpg`
 
 Replace [`src/Launcher.App/Assets/background.jpg`](../src/Launcher.App/Assets)

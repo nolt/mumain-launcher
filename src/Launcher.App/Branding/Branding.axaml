@@ -14,6 +14,13 @@
     <x:String x:Key="BrandServerName">SERVER NAME</x:String>
     <x:String x:Key="BrandSubtitle">LAUNCHER</x:String>
 
+    <!-- What shows at the top of the window:
+         Text = BrandServerName + BrandSubtitle (above);
+         Logo = the image in Assets/logo.png (replace it with your own);
+         None = nothing - just the background art (use when your background already
+                contains the title). The window stays draggable in every mode. -->
+    <x:String x:Key="BrandTitleMode">Text</x:String>
+
     <!-- UI text (buttons & status messages).
          Translate these to ship the launcher in another language; {0},{1}... are
          filled in at runtime (counts, version, sizes) - keep them in place. -->
