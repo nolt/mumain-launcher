@@ -2,7 +2,7 @@ namespace Launcher.Core.SelfUpdate;
 
 /// <summary>
 /// File operations that replace the launcher binary with a freshly downloaded one.
-/// Uses renames only — a running executable can be renamed (Windows allows this
+/// Uses renames only - a running executable can be renamed (Windows allows this
 /// even though it forbids overwriting), so the same steps work on every platform.
 /// Pure file work, so the full cycle can be tested without starting a process.
 /// </summary>

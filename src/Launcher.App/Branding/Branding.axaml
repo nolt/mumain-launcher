@@ -2,21 +2,21 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--
-      ════════════════════════════════════════════════════════════════════════
-      BRANDING — edit this file (and the files in Assets/) to skin the launcher
+      ========================================================================
+      BRANDING - edit this file (and the files in Assets/) to skin the launcher
       for your server, then rebuild with ./build.sh. See docs/branding.md.
       Nothing here touches the launcher's logic.
-      ════════════════════════════════════════════════════════════════════════
+      ========================================================================
     -->
 
-    <!-- ── Window text ──────────────────────────────────────────────────── -->
+    <!-- Window text -->
     <!-- Server name shown as the title. Enter it UPPERCASE for the styled look. -->
     <x:String x:Key="BrandServerName">SERVER NAME</x:String>
     <x:String x:Key="BrandSubtitle">LAUNCHER</x:String>
 
-    <!-- ── UI text (buttons & status messages) ──────────────────────────────
-         Translate these to ship the launcher in another language; {0},{1}… are
-         filled in at runtime (counts, version, sizes) — keep them in place. -->
+    <!-- UI text (buttons & status messages).
+         Translate these to ship the launcher in another language; {0},{1}... are
+         filled in at runtime (counts, version, sizes) - keep them in place. -->
     <x:String x:Key="UiPlay">PLAY</x:String>
     <x:String x:Key="UiRetry">Retry</x:String>
     <x:String x:Key="UiStarting">Starting…</x:String>
@@ -30,7 +30,7 @@
     <x:String x:Key="UiUpdateError">Could not update. Check your connection and try again.</x:String>
     <x:String x:Key="UiLaunchError">Could not start the client. On Linux, is Wine installed?</x:String>
 
-    <!-- ── Window size (logical pixels; the OS scales for DPI) ──────────────-->
+    <!-- Window size (logical pixels; the OS scales for DPI) -->
     <x:Double x:Key="WindowWidth">760</x:Double>
     <x:Double x:Key="WindowHeight">475</x:Double>
 
@@ -39,13 +39,13 @@
          0 = centred. Tune this after swapping Assets/background.jpg. -->
     <x:Double x:Key="BackgroundOffsetY">-80</x:Double>
 
-    <!-- ── Window frame (borderless window with our own gold frame) ──────────-->
+    <!-- Window frame (borderless window with our own gold frame) -->
     <CornerRadius x:Key="WindowCornerRadius">0</CornerRadius>   <!-- 0 = square corners -->
     <Thickness x:Key="WindowBorderThickness">2</Thickness>     <!-- gold frame width -->
     <!-- BrandGoldBrush (below) is the frame colour. -->
 
 
-    <!-- ── Colours (hex is #AARRGGBB — first two digits are opacity) ─────────
+    <!-- Colours (hex is #AARRGGBB - first two digits are opacity).
          Defaults match the server website: gold #d4af37, text #e0e0e0. -->
     <Color x:Key="BrandGoldColor">#FFD4AF37</Color>          <!-- primary gold -->
     <Color x:Key="BrandGoldDarkColor">#FFA68A2D</Color>      <!-- gradient end -->
@@ -55,9 +55,9 @@
     <Color x:Key="BrandButtonTextColor">#FF1A1408</Color>    <!-- text on the gold PLAY button -->
     <Color x:Key="BrandPanelColor">#F2141414</Color>         <!-- bottom panel (0.95 opacity; hides art behind it) -->
     <Color x:Key="BrandWindowColor">#FF0A0A0A</Color>        <!-- behind the background image -->
-    <Color x:Key="BrandArtDimColor">#40000000</Color>        <!-- overall dim over the art (0x40 ≈ 25%); #00000000 = none -->
+    <Color x:Key="BrandArtDimColor">#40000000</Color>        <!-- overall dim over the art (0x40 = ~25%); #00000000 = none -->
 
-    <!-- ── Brushes derived from the colours above (usually no need to edit) ──-->
+    <!-- Brushes derived from the colours above (usually no need to edit) -->
     <SolidColorBrush x:Key="BrandGoldBrush" Color="{StaticResource BrandGoldColor}" />
     <SolidColorBrush x:Key="BrandGoldHighlightBrush" Color="{StaticResource BrandGoldHighlightColor}" />
     <SolidColorBrush x:Key="BrandTextBrush" Color="{StaticResource BrandTextColor}" />

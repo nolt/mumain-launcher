@@ -79,7 +79,41 @@ To use a different file name or format (e.g. `.png`), update the `Image`
 `Source` in [`MainWindow.axaml`](../src/Launcher.App/MainWindow.axaml)
 (`avares://Launcher.App/Assets/<your-file>`).
 
-## 3. Font (optional)
+## 3. Icon — `Assets/icon.ico`
+
+Replace [`src/Launcher.App/Assets/icon.ico`](../src/Launcher.App/Assets) with your
+own, **keeping the file name**. One file drives both:
+
+- the **window / taskbar icon** (Avalonia `Icon` in `MainWindow.axaml`, Windows + Linux), and
+- the **`.exe` icon** shown in Windows Explorer (`<ApplicationIcon>` in `Launcher.App.csproj`).
+
+Make it a **multi-size `.ico`** (16/24/32/48/256). The simplest path is to start
+from a square PNG (≥ 256×256, transparent background) and convert it — e.g. with
+Pillow:
+
+```python
+from PIL import Image
+img = Image.open("logo.png").convert("RGBA")  # pad to a square canvas first if needed
+img.save("icon.ico", sizes=[(16,16),(24,24),(32,32),(48,48),(256,256)])
+```
+
+Keep the artwork readable at 16×16 — fine text and thin details vanish at that
+size, so a bold silhouette works best.
+
+**Linux / GNOME also needs a PNG.** GNOME shows the app icon from a `.desktop`
+file, not from the window, and prefers PNG over `.ico`. So when you rebrand,
+replace **both**:
+
+- `src/Launcher.App/Assets/icon.ico` — window + Windows `.exe`, and
+- [`packaging/linux/icon.png`](../packaging/linux) — the 256×256 PNG used on Linux.
+
+`./build.sh publish` ships that PNG plus a generated `install-linux.sh` into
+`out/launcher/`; a Linux player runs it once to register the icon and a menu
+entry. The window's X11 `WM_CLASS` is set to the binary's own name (so it follows
+`LAUNCHER_NAME`), and `install-linux.sh` writes the matching `StartupWMClass`, so
+GNOME pairs the window with the icon automatically.
+
+## 4. Font (optional)
 
 The launcher uses the bundled **Inter** font, which renders identically on
 Windows and under Wine. To change it, add the font package and set it as the

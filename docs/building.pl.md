@@ -42,7 +42,9 @@ out/
 └── launcher/
     ├── MumainLauncher.exe         # ← launcher Windows do rozdania
     ├── MumainLauncher             # ← launcher Linux do rozdania
-    └── launcher.json              # ← manifest samo-aktualizacji (wersja + hashe)
+    ├── launcher.json              # ← manifest samo-aktualizacji (wersja + hashe)
+    ├── icon.png                   # ← ikona aplikacji na Linux (do wpisu .desktop)
+    └── install-linux.sh           # ← gracz Linux uruchamia raz dla ikony/menu w GNOME
 ```
 
 **Używaj folderu `out/launcher/`** — ma obie gotowe binarki plus manifest

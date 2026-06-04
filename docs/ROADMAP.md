@@ -55,10 +55,21 @@ fully isolated to `Launcher.App`:
 Decided against for now: runtime/remote-configurable branding (build-time only,
 per the "someone building for themselves" requirement).
 
+### Done since
+
+- **Icon** — `Assets/icon.ico` (multi-size 16–256) wired to both the window/taskbar
+  (`Icon` in `MainWindow.axaml`) and the Windows `.exe` (`<ApplicationIcon>`). One
+  swappable file, documented in `branding.md`.
+- **Linux/GNOME desktop integration** — GNOME shows the app icon from a `.desktop`
+  file, not the window icon. The binary sets its X11 `WM_CLASS` to its own process
+  name (Program.cs), and `build.sh publish` emits `out/launcher/icon.png` +
+  `install-linux.sh`, which registers a matching `StartupWMClass` `.desktop` entry
+  under `~/.local/share/`. Source PNG: `packaging/linux/icon.png` (replace alongside
+  `icon.ico` when rebranding).
+
 ### Still optional / not done
 
 - A `logo.png` slot instead of the text title (layout leaves room; not wired yet).
-- Window/taskbar icon.
 - Custom embedded font (kept Inter — safest under Wine).
 - Trimming to shrink the ~47 MB binary (needs a GUI test — Avalonia + trimming
   can break reflection-based XAML).

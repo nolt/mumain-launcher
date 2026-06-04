@@ -56,7 +56,7 @@ public class LocalFileComparerTests : IDisposable
     {
         var info = WriteLocal("file.dat", Bytes("real content"));
         var cache = LocalManifestCache.Load(_clientDir);
-        // Cache says this exact (size, mtime) hashes to "cachedhash" — not the real content hash.
+        // Cache says this exact (size, mtime) hashes to "cachedhash" - not the real content hash.
         cache.Set("file.dat", new LocalManifestCache.Entry(info.Length, info.LastWriteTimeUtc, "cachedhash"));
         var comparer = new LocalFileComparer(_clientDir, cache);
         var file = new ManifestFile("file.dat", "cachedhash", info.Length);
@@ -73,7 +73,7 @@ public class LocalFileComparerTests : IDisposable
         var cache = LocalManifestCache.Load(_clientDir);
         cache.Set("file.dat", new LocalManifestCache.Entry(info.Length, info.LastWriteTimeUtc, "stalehash"));
 
-        // Touch the file: same size, newer timestamp — the cached hash must be discarded.
+        // Touch the file: same size, newer timestamp - the cached hash must be discarded.
         File.SetLastWriteTimeUtc(Path.Combine(_clientDir, "file.dat"), info.LastWriteTimeUtc.AddMinutes(5));
         var comparer = new LocalFileComparer(_clientDir, cache);
         var file = new ManifestFile("file.dat", Hash(bytes), bytes.Length);

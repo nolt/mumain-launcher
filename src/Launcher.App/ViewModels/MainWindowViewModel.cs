@@ -8,7 +8,7 @@ namespace Launcher.App.ViewModels;
 /// <summary>
 /// Drives the launcher window: runs the update on open, maps progress to the
 /// status text and progress bar, and starts the client when the user clicks Play.
-/// Holds no update logic of its own — it delegates to <see cref="ClientUpdater"/>.
+/// Holds no update logic of its own - it delegates to <see cref="ClientUpdater"/>.
 /// User-facing text comes from the branding resources (see Branding.axaml), so it
 /// is translatable per build.
 /// </summary>

@@ -25,7 +25,7 @@ public sealed class LocalFileComparer
             return true;
         }
 
-        // A size mismatch is conclusive on its own — no need to read the file.
+        // A size mismatch is conclusive on its own - no need to read the file.
         if (info.Length != file.Size)
         {
             return true;

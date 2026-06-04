@@ -38,6 +38,22 @@ chmod +x MumainLauncher   # raz, w razie potrzeby
 Kliknij **GRAJ** po zakończeniu aktualizacji; launcher sam uruchomi klienta przez
 Wine.
 
+### Ikona i wpis w menu (opcjonalnie)
+
+Jeśli serwer dołącza obok launchera `icon.png` i `install-linux.sh`, uruchom skrypt
+raz, aby dostać ikonę launchera i wpis w menu aplikacji:
+
+```sh
+./install-linux.sh              # dodaje ikonę + wpis w menu
+./install-linux.sh --uninstall  # usuwa je z powrotem
+```
+
+To głównie dla **GNOME**, które pokazuje generyczną ikonę, dopóki nie zarejestruje
+się wpisu `.desktop` (to decyzja projektowa GNOME, niezależna od launchera). Może
+być potrzebne wylogowanie i ponowne zalogowanie, aby ikona się pojawiła. Skrypt
+dodaje pliki tylko w `~/.local/share/` i nie rusza klienta; `--uninstall` usuwa
+dokładnie te pliki.
+
 ### Wybór prefixu Wine (opcjonalnie)
 
 Domyślnie launcher używa `WINEPREFIX` ze środowiska:

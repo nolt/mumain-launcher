@@ -41,7 +41,9 @@ out/
 └── launcher/
     ├── MumainLauncher.exe         # ← the Windows launcher to ship
     ├── MumainLauncher             # ← the Linux launcher to ship
-    └── launcher.json              # ← self-update manifest (version + hashes)
+    ├── launcher.json              # ← self-update manifest (version + hashes)
+    ├── icon.png                   # ← Linux app icon (for the .desktop entry)
+    └── install-linux.sh           # ← Linux players run once for the GNOME icon/menu
 ```
 
 **Use the `out/launcher/` folder** — it holds both ready binaries plus the

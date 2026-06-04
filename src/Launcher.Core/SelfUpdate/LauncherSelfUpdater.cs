@@ -29,7 +29,7 @@ public sealed class LauncherSelfUpdater
     }
 
     /// <summary>
-    /// Returns <c>true</c> if a newer launcher was downloaded and swapped in — the
+    /// Returns <c>true</c> if a newer launcher was downloaded and swapped in - the
     /// caller must then restart. Returns <c>false</c> if already current or if the
     /// check could not be completed.
     /// </summary>

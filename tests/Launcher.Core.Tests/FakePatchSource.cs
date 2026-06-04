@@ -20,7 +20,7 @@ internal sealed class FakePatchSource : IPatchSource
         _baseUrl = baseUrl;
     }
 
-    /// <summary>How many times a file stream was opened — lets tests assert "nothing was downloaded".</summary>
+    /// <summary>How many times a file stream was opened - lets tests assert "nothing was downloaded".</summary>
     public int OpenCount { get; private set; }
 
     /// <summary>Paths whose served bytes are deliberately corrupted, to trigger hash mismatch.</summary>

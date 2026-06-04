@@ -21,7 +21,7 @@ public class ClientLaunchCommandTests
     {
         var command = ClientLaunchCommand.Create("/games/mu", "Main.exe", isWindows: false);
 
-        // Bare name, resolved against the working directory — no absolute path.
+        // Bare name, resolved against the working directory - no absolute path.
         Assert.Equal("wine", command.FileName);
         Assert.Equal(["Main.exe"], command.Arguments);
         Assert.Equal("/games/mu", command.WorkingDirectory);

@@ -4,6 +4,7 @@
         x:Class="Launcher.App.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="{DynamicResource BrandServerName}"
+        Icon="avares://Launcher.App/Assets/icon.ico"
         Width="{DynamicResource WindowWidth}"
         Height="{DynamicResource WindowHeight}"
         CanResize="False"
@@ -165,7 +166,7 @@
         </Border>
 
         <!-- Gold frame painted last, so it always sits on top of the background
-             art — whatever image is dropped into Assets/ can never cover it.
+             art - whatever image is dropped into Assets/ can never cover it.
              Non-interactive so it doesn't block dragging or the caption buttons. -->
         <Border CornerRadius="{DynamicResource WindowCornerRadius}"
                 BorderBrush="{DynamicResource BrandGoldBrush}"

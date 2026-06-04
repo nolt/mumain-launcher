@@ -10,7 +10,7 @@ namespace Launcher.Core;
 public static class LauncherConfig
 {
     /// <summary>
-    /// Full URL of the patch manifest (version.json). Placeholder — replace with
+    /// Full URL of the patch manifest (version.json). Placeholder - replace with
     /// the real patch host before building.
     /// </summary>
     public const string ManifestUrl = "https://patch.example.com/version.json";
@@ -33,7 +33,7 @@ public static class LauncherConfig
 
     /// <summary>
     /// This launcher's version, taken from the assembly's informational version
-    /// (set via <c>-p:Version=…</c> at publish). Any build metadata after '+' is
+    /// (set via <c>-p:Version=...</c> at publish). Any build metadata after '+' is
     /// dropped so it matches the plain version string in <c>launcher.json</c>.
     /// </summary>
     public static string CurrentLauncherVersion

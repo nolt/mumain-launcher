@@ -38,6 +38,22 @@ chmod +x MumainLauncher   # once, if needed
 Press **PLAY** when the update completes; the launcher starts the client through
 Wine for you.
 
+### App icon & menu entry (optional)
+
+If the server ships `icon.png` and `install-linux.sh` next to the launcher, run
+the script once to get the launcher's icon and a menu entry:
+
+```sh
+./install-linux.sh              # add the icon + menu entry
+./install-linux.sh --uninstall  # remove them again
+```
+
+This is mainly for **GNOME**, which shows a generic icon until a `.desktop` entry
+is registered (a GNOME design choice, unrelated to the launcher). You may need to
+log out and back in for the icon to appear. It only adds files under
+`~/.local/share/` and never touches the client; `--uninstall` removes exactly
+those files.
+
 ### Choosing a Wine prefix (optional)
 
 By default the launcher uses your environment's `WINEPREFIX`:

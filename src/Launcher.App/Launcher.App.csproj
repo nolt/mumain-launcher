@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Icon embedded into the Windows .exe (Explorer, taskbar). Swap Assets\icon.ico to rebrand. -->
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <!-- Embed native libs (SkiaSharp, HarfBuzz) into the single file so it is
          truly self-contained; they are self-extracted at startup. -->
@@ -13,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Branding artwork (background, optional logo) embedded into the binary. -->
+    <!-- Branding artwork (background, window icon) embedded into the binary. -->
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 

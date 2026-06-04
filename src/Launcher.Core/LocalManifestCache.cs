@@ -5,7 +5,7 @@ namespace Launcher.Core;
 /// <summary>
 /// Remembers the hash of each local file together with the size and last-write
 /// time it had when hashed. If those still match, the cached hash can be trusted
-/// without re-reading the whole file — the slow part when checking 700+ MB.
+/// without re-reading the whole file - the slow part when checking 700+ MB.
 ///
 /// The cache is an optimization only: a missing, stale or corrupt entry simply
 /// causes the file to be hashed again, so it never affects correctness.
