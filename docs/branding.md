@@ -86,6 +86,22 @@ Windows and under Wine. To change it, add the font package and set it as the
 default — ask before doing this: a font loaded at runtime is the one thing that
 can misbehave under Wine, so it needs a build to verify.
 
+## Language (UI text)
+
+All button labels and status messages live in `Branding.axaml` as `Ui*` strings
+(default English). Translate them to ship the launcher in another language. The
+`{0}`, `{1}`… placeholders are filled at runtime (counts, version, sizes) — keep
+them in place. Example (Polish):
+
+```xml
+<x:String x:Key="UiPlay">GRAJ</x:String>
+<x:String x:Key="UiRetry">Ponów</x:String>
+<x:String x:Key="UiDownloading">Pobieranie {0}/{1}  ({2} / {3})</x:String>
+```
+
+The whole UI then renders in one consistent language; this is build-time, not a
+runtime switch.
+
 ## Build after changing
 
 ```sh

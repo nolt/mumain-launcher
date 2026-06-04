@@ -6,7 +6,7 @@ Wieloplatformowy launcher i auto-updater dla klienta gry
 [MuMain](https://github.com/sven-n/MuMain). Synchronizuje pliki klienta gracza
 z serwerem patchy przez HTTP(S), a następnie uruchamia klienta.
 
-![MuMain Launcher — domyślny motyw](docs/assets/screenshot.png)
+![MuMain Launcher — domyślny motyw](docs/assets/screenshot.pl.png)
 
 *Podgląd domyślnego motywu. Wszystko, co widać — kolory, tło, nazwa, rozmiar —
 jest konfigurowalne; zobacz [Wygląd / branding](docs/branding.pl.md).*

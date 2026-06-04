@@ -1,3 +1,5 @@
+using System.Globalization;
+using Avalonia;
 using Launcher.Core;
 using Launcher.Core.SelfUpdate;
 
@@ -7,6 +9,8 @@ namespace Launcher.App.ViewModels;
 /// Drives the launcher window: runs the update on open, maps progress to the
 /// status text and progress bar, and starts the client when the user clicks Play.
 /// Holds no update logic of its own — it delegates to <see cref="ClientUpdater"/>.
+/// User-facing text comes from the branding resources (see Branding.axaml), so it
+/// is translatable per build.
 /// </summary>
 public sealed class MainWindowViewModel : ViewModelBase
 {
@@ -17,7 +21,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     private readonly Action _restart;
     private readonly CancellationTokenSource _cancellation = new();
 
-    private string _statusText = "Starting…";
+    private string _statusText = Text("UiStarting", "Starting…");
     private double _progressValue;
     private bool _isProgressIndeterminate = true;
     private bool _canPlay;
@@ -91,12 +95,12 @@ public sealed class MainWindowViewModel : ViewModelBase
         CanPlay = false;
         CanRetry = false;
         IsProgressIndeterminate = true;
-        StatusText = "Checking for updates…";
+        StatusText = Text("UiCheckingUpdates", "Checking for updates…");
 
         var progress = new Progress<UpdateProgress>(OnProgress);
         try
         {
-            StatusText = "Updating launcher…";
+            StatusText = Text("UiUpdatingLauncher", "Updating launcher…");
             if (await _selfUpdater.TryUpdateAsync(_cancellation.Token))
             {
                 _restart();
@@ -107,18 +111,18 @@ public sealed class MainWindowViewModel : ViewModelBase
             IsProgressIndeterminate = false;
             ProgressValue = 100;
             StatusText = result.WasUpToDate
-                ? "Up to date — ready to play."
-                : $"Updated to {result.Version} — ready to play.";
+                ? Text("UiUpToDate", "Up to date — ready to play.")
+                : Format("UiUpdated", "Updated to {0} — ready to play.", result.Version);
             CanPlay = true;
         }
         catch (OperationCanceledException)
         {
             // The window is closing; no message needed.
         }
-        catch (UpdateException ex)
+        catch (UpdateException)
         {
             IsProgressIndeterminate = false;
-            StatusText = ex.Message;
+            StatusText = Text("UiUpdateError", "Could not update. Check your connection and try again.");
             CanRetry = true;
         }
     }
@@ -129,12 +133,13 @@ public sealed class MainWindowViewModel : ViewModelBase
         {
             case UpdatePhase.FetchingManifest:
                 IsProgressIndeterminate = true;
-                StatusText = "Contacting update server…";
+                StatusText = Text("UiContactingServer", "Contacting update server…");
                 break;
 
             case UpdatePhase.CheckingFiles:
                 IsProgressIndeterminate = true;
-                StatusText = $"Checking files… {progress.FilesCompleted}/{progress.FilesTotal}";
+                StatusText = Format("UiCheckingFiles", "Checking files… {0}/{1}",
+                    progress.FilesCompleted, progress.FilesTotal);
                 break;
 
             case UpdatePhase.Downloading:
@@ -142,8 +147,10 @@ public sealed class MainWindowViewModel : ViewModelBase
                 ProgressValue = progress.BytesTotal == 0
                     ? 0
                     : (double)progress.BytesCompleted / progress.BytesTotal * 100;
-                StatusText = $"Downloading {progress.FilesCompleted}/{progress.FilesTotal}  "
-                    + $"({ByteSizeFormatter.Format(progress.BytesCompleted)} / {ByteSizeFormatter.Format(progress.BytesTotal)})";
+                StatusText = Format("UiDownloading", "Downloading {0}/{1}  ({2} / {3})",
+                    progress.FilesCompleted, progress.FilesTotal,
+                    ByteSizeFormatter.Format(progress.BytesCompleted),
+                    ByteSizeFormatter.Format(progress.BytesTotal));
                 break;
 
             case UpdatePhase.Completed:
@@ -159,9 +166,18 @@ public sealed class MainWindowViewModel : ViewModelBase
             _launcher.Launch();
             _closeWindow();
         }
-        catch (ClientLaunchException ex)
+        catch (ClientLaunchException)
         {
-            StatusText = ex.Message;
+            StatusText = Text("UiLaunchError", "Could not start the client. On Linux, is Wine installed?");
         }
     }
+
+    /// <summary>Reads a UI string from the branding resources, falling back to English.</summary>
+    private static string Text(string key, string fallback) =>
+        Application.Current is { } app && app.TryGetResource(key, null, out var value) && value is string s
+            ? s
+            : fallback;
+
+    private static string Format(string key, string fallback, params object[] args) =>
+        string.Format(CultureInfo.CurrentCulture, Text(key, fallback), args);
 }

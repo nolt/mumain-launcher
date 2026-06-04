@@ -11,8 +11,24 @@
 
     <!-- ── Window text ──────────────────────────────────────────────────── -->
     <!-- Server name shown as the title. Enter it UPPERCASE for the styled look. -->
-    <x:String x:Key="BrandServerName">NAZWA SERWERA</x:String>
+    <x:String x:Key="BrandServerName">SERVER NAME</x:String>
     <x:String x:Key="BrandSubtitle">LAUNCHER</x:String>
+
+    <!-- ── UI text (buttons & status messages) ──────────────────────────────
+         Translate these to ship the launcher in another language; {0},{1}… are
+         filled in at runtime (counts, version, sizes) — keep them in place. -->
+    <x:String x:Key="UiPlay">PLAY</x:String>
+    <x:String x:Key="UiRetry">Retry</x:String>
+    <x:String x:Key="UiStarting">Starting…</x:String>
+    <x:String x:Key="UiCheckingUpdates">Checking for updates…</x:String>
+    <x:String x:Key="UiUpdatingLauncher">Updating launcher…</x:String>
+    <x:String x:Key="UiContactingServer">Contacting update server…</x:String>
+    <x:String x:Key="UiCheckingFiles">Checking files… {0}/{1}</x:String>
+    <x:String x:Key="UiDownloading">Downloading {0}/{1}  ({2} / {3})</x:String>
+    <x:String x:Key="UiUpToDate">Up to date — ready to play.</x:String>
+    <x:String x:Key="UiUpdated">Updated to {0} — ready to play.</x:String>
+    <x:String x:Key="UiUpdateError">Could not update. Check your connection and try again.</x:String>
+    <x:String x:Key="UiLaunchError">Could not start the client. On Linux, is Wine installed?</x:String>
 
     <!-- ── Window size (logical pixels; the OS scales for DPI) ──────────────-->
     <x:Double x:Key="WindowWidth">760</x:Double>

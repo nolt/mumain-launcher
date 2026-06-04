@@ -2,7 +2,7 @@
 
 *[English version](branding.md)*
 
-![Domyślny motyw](assets/screenshot.png)
+![Domyślny motyw](assets/screenshot.pl.png)
 
 ## Rebrand w 3 krokach
 
@@ -88,6 +88,22 @@ Launcher używa dołączonej czcionki **Inter**, która renderuje się identyczn
 Windows i pod Wine. Aby ją zmienić, dodaj pakiet czcionki i ustaw ją jako
 domyślną — zapytaj przed tym: czcionka ładowana w runtime to jedyna rzecz, która
 potrafi sprawiać problemy pod Wine, więc wymaga weryfikacji na buildzie.
+
+## Język (napisy UI)
+
+Wszystkie etykiety przycisków i komunikaty statusu są w `Branding.axaml` jako
+`x:String` z kluczami `Ui*` (domyślnie angielski). Przetłumacz je, by wydać
+launcher w innym języku. Wstawki `{0}`, `{1}`… są wypełniane w runtime (liczby,
+wersja, rozmiary) — zostaw je na miejscu. Przykład (polski):
+
+```xml
+<x:String x:Key="UiPlay">GRAJ</x:String>
+<x:String x:Key="UiRetry">Ponów</x:String>
+<x:String x:Key="UiDownloading">Pobieranie {0}/{1}  ({2} / {3})</x:String>
+```
+
+Całe UI renderuje się wtedy w jednym, spójnym języku; to konfiguracja przy
+budowaniu, nie przełącznik w locie.
 
 ## Budowanie po zmianach
 
