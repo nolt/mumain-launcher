@@ -17,6 +17,15 @@ i publikujących: [Budowanie](building.pl.md) i [Wydawanie aktualizacji](releasi
 
 Launcher pobierasz tylko raz — później aktualizuje się sam.
 
+## Ustawienia
+
+Kliknij **ikonę koła zębatego** w lewym górnym rogu, aby zmienić
+**rozdzielczość**, **tryb okienkowy** oraz **głośność dźwięku / muzyki**. Naciśnij
+**Zapisz** — zmiany zadziałają przy następnym uruchomieniu klienta.
+
+Launcher edytuje tylko te ustawienia w pliku `config.ini` klienta — nie rusza
+połączenia z serwerem ani zapamiętanego logowania.
+
 ## Windows
 
 Kliknij dwukrotnie `MumainLauncher.exe`. Po zakończeniu aktualizacji kliknij

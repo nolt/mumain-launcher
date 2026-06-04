@@ -26,8 +26,9 @@ public sealed class MainWindowViewModel : ViewModelBase
     private bool _isProgressIndeterminate = true;
     private bool _canPlay;
     private bool _canRetry;
+    private bool _isSettingsOpen;
 
-    public MainWindowViewModel(ClientUpdater updater, ClientLauncher launcher, LauncherSelfUpdater selfUpdater, Action closeWindow, Action restart)
+    public MainWindowViewModel(ClientUpdater updater, ClientLauncher launcher, LauncherSelfUpdater selfUpdater, ClientConfig clientConfig, Action closeWindow, Action restart)
     {
         _updater = updater;
         _launcher = launcher;
@@ -36,11 +37,23 @@ public sealed class MainWindowViewModel : ViewModelBase
         _restart = restart;
         PlayCommand = new RelayCommand(Play, () => CanPlay);
         RetryCommand = new RelayCommand(() => _ = RunUpdateAsync(), () => CanRetry);
+        Settings = new SettingsViewModel(clientConfig, () => IsSettingsOpen = false);
+        OpenSettingsCommand = new RelayCommand(OpenSettings);
     }
 
     public RelayCommand PlayCommand { get; }
 
     public RelayCommand RetryCommand { get; }
+
+    public RelayCommand OpenSettingsCommand { get; }
+
+    public SettingsViewModel Settings { get; }
+
+    public bool IsSettingsOpen
+    {
+        get => _isSettingsOpen;
+        private set => SetField(ref _isSettingsOpen, value);
+    }
 
     public string StatusText
     {
@@ -157,6 +170,12 @@ public sealed class MainWindowViewModel : ViewModelBase
                 ProgressValue = 100;
                 break;
         }
+    }
+
+    private void OpenSettings()
+    {
+        Settings.Load();
+        IsSettingsOpen = true;
     }
 
     private void Play()

@@ -29,6 +29,15 @@
     <x:String x:Key="UiUpdated">Updated to {0} — ready to play.</x:String>
     <x:String x:Key="UiUpdateError">Could not update. Check your connection and try again.</x:String>
     <x:String x:Key="UiLaunchError">Could not start the client. On Linux, is Wine installed?</x:String>
+    <x:String x:Key="UiMinimise">Minimise</x:String>
+    <x:String x:Key="UiClose">Close</x:String>
+    <x:String x:Key="UiSettings">Settings</x:String>
+    <x:String x:Key="UiResolution">Resolution</x:String>
+    <x:String x:Key="UiWindowed">Windowed</x:String>
+    <x:String x:Key="UiSound">Sound</x:String>
+    <x:String x:Key="UiMusic">Music</x:String>
+    <x:String x:Key="UiSave">Save</x:String>
+    <x:String x:Key="UiCancel">Cancel</x:String>
 
     <!-- Window size (logical pixels; the OS scales for DPI) -->
     <x:Double x:Key="WindowWidth">760</x:Double>

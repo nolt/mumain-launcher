@@ -17,6 +17,15 @@ publishing it, see [Building](building.md) and [Releasing updates](releasing-upd
 
 You only download the launcher once — afterwards it updates itself automatically.
 
+## Settings
+
+Click the **gear icon** in the top-left corner to change the game's
+**resolution**, **windowed mode** and **sound / music volume**. Press **Save** and
+the changes apply the next time you start the client.
+
+The launcher only edits those settings in the client's `config.ini` — it never
+touches your server connection or saved login.
+
 ## Windows
 
 Double-click `MumainLauncher.exe`. When the update finishes, click **PLAY**; the

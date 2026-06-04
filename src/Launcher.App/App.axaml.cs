@@ -38,9 +38,11 @@ public partial class App : Application
             LauncherConfig.CurrentExecutablePath,
             RuntimePlatform.Current());
 
+        var clientConfig = new ClientConfig(clientDirectory);
+
         var window = new MainWindow();
         var viewModel = new MainWindowViewModel(
-            updater, launcher, selfUpdater,
+            updater, launcher, selfUpdater, clientConfig,
             window.Close,
             () => LauncherRestart.RestartTo(LauncherConfig.CurrentExecutablePath));
         window.DataContext = viewModel;
