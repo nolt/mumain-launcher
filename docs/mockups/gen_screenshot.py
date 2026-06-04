@@ -1,6 +1,7 @@
 """Render the launcher look as documentation screenshots (docs/assets/).
 Produces an English screenshot (default theme) and a Polish one. Faithful
 approximation of MainWindow.axaml; not a substitute for running the launcher."""
+import math
 import os
 from PIL import Image, ImageDraw, ImageFont
 
@@ -23,6 +24,14 @@ def spaced(d, x, y, t, f, fill, tr, glow=None):
     for c in t:
         if glow: d.text((cx+1, y+1), c, font=f, fill=glow)
         d.text((cx, y), c, font=f, fill=fill); cx += d.textlength(c, font=f)+tr
+def gear(d, cx, cy, size, color):
+    R = size/2; rb = R*0.70
+    for k in range(8):
+        a = k*math.pi/4; w = 0.24; w2 = 0.13
+        d.polygon([(cx+rb*math.cos(a-w), cy+rb*math.sin(a-w)), (cx+R*math.cos(a-w2), cy+R*math.sin(a-w2)),
+                   (cx+R*math.cos(a+w2), cy+R*math.sin(a+w2)), (cx+rb*math.cos(a+w), cy+rb*math.sin(a+w))], fill=color)
+    d.ellipse([cx-rb, cy-rb, cx+rb, cy+rb], fill=color)
+    d.ellipse([cx-R*0.30, cy-R*0.30, cx+R*0.30, cy+R*0.30], fill=(12, 12, 14))   # hole
 def hgrad(img, box, c0, c1, r):
     x0, y0, x1, y1 = box; w = x1-x0; h = y1-y0; g = Image.new("RGB", (w, 1))
     for i in range(w):
@@ -39,6 +48,7 @@ def render(title, subtitle, status, retry, play, out):
     img.paste(Image.alpha_composite(img.crop((0, 0, W, scrim_h)).convert("RGBA"), sc).convert("RGB"), (0, 0))
     d = ImageDraw.Draw(img, "RGBA")
     d.text((W-128, 16), "—", font=F_CAP, fill=GOLD); d.text((W-64, 16), "✕", font=F_CAP, fill=GOLD)
+    gear(d, 52, 38, 34, GOLD)                                                       # settings gear, top-left
     w1 = tw(d, title, F_TITLE, 12); spaced(d, (W-w1)/2, 116, title, F_TITLE, GOLD, 12, glow=(0, 0, 0))
     w2 = tw(d, subtitle, F_SUB, 10); spaced(d, (W-w2)/2, 206, subtitle, F_SUB, DIM, 10)
     ptop = H-250
