@@ -64,7 +64,11 @@ def render(title, subtitle, status, retry, play, out):
     d.rounded_rectangle([rx0, gy0, rx1, gy1], 8, outline=GOLD, width=3)
     rtw = tw(d, retry, F_GHOST, 0); d.text((rx0+(rw-rtw)/2, gy0+14), retry, font=F_GHOST, fill=GOLD)
     d.rectangle([0, 0, W-1, H-1], outline=GOLD, width=4)
-    img.save(os.path.join(ASSETS, out)); print("saved", out)
+    # Downscale and save as JPEG: a photographic screenshot compresses ~10x smaller
+    # than PNG at a size that is still crisp in the README.
+    out_w = 1140; out_h = int(img.height * out_w / img.width)
+    img.resize((out_w, out_h)).save(os.path.join(ASSETS, out), quality=88)
+    print("saved", out)
 
-render("SERVER NAME", "LAUNCHER", "Downloading 12/40  (340 MB / 1.1 GB)", "Retry", "PLAY", "screenshot.png")
-render("NAZWA SERWERA", "LAUNCHER", "Pobieranie 12/40  (340 MB / 1.1 GB)", "Ponów", "GRAJ", "screenshot.pl.png")
+render("SERVER NAME", "LAUNCHER", "Downloading 12/40  (340 MB / 1.1 GB)", "Retry", "PLAY", "screenshot.jpg")
+render("NAZWA SERWERA", "LAUNCHER", "Pobieranie 12/40  (340 MB / 1.1 GB)", "Ponów", "GRAJ", "screenshot.pl.jpg")

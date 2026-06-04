@@ -6,7 +6,7 @@ Cross-platform launcher and auto-updater for the [MuMain](https://github.com/sve
 game client. It keeps a player's client files in sync with a patch server over
 HTTP(S), then starts the client.
 
-![MuMain Launcher — default theme](docs/assets/screenshot.png)
+![MuMain Launcher — default theme](docs/assets/screenshot.jpg)
 
 *Preview of the default theme. Everything you see — colours, background, name,
 size — is configurable; see [Branding](docs/branding.md).*

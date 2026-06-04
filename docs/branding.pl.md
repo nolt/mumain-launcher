@@ -2,7 +2,7 @@
 
 *[English version](branding.md)*
 
-![Domyślny motyw](assets/screenshot.pl.png)
+![Domyślny motyw](assets/screenshot.pl.jpg)
 
 ## Rebrand w 3 krokach
 

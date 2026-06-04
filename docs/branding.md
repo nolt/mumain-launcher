@@ -2,7 +2,7 @@
 
 *[Wersja polska](branding.pl.md)*
 
-![Default theme](assets/screenshot.png)
+![Default theme](assets/screenshot.jpg)
 
 ## Rebrand in 3 steps
 
