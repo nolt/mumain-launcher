@@ -1,5 +1,7 @@
 # Releasing updates
 
+*[Wersja polska](releasing-updates.pl.md)*
+
 How a server admin publishes client updates and new launcher versions. All builds
 run in the .NET SDK container via `./build.sh`, so the host only needs Docker.
 

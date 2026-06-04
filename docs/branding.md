@@ -1,5 +1,21 @@
 # Branding the launcher
 
+*[Wersja polska](branding.pl.md)*
+
+![Default theme](assets/screenshot.png)
+
+## Rebrand in 3 steps
+
+1. **Colours, name, size** → edit
+   [`Branding/Branding.axaml`](../src/Launcher.App/Branding/Branding.axaml).
+2. **Background** → replace
+   [`Assets/background.jpg`](../src/Launcher.App/Assets) (keep the file name).
+3. **Rebuild** → `./build.sh publish <version>`.
+
+Details below.
+
+---
+
 Everything that controls how the launcher *looks* lives in two places. Change
 them, rebuild with `./build.sh`, and you have a launcher skinned for your server.
 None of this touches the update/launch logic — it is isolated to `Launcher.App`.

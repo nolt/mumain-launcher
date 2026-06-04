@@ -6,6 +6,11 @@ Cross-platform launcher and auto-updater for the [MuMain](https://github.com/sve
 game client. It keeps a player's client files in sync with a patch server over
 HTTP(S), then starts the client.
 
+![MuMain Launcher — default theme](docs/assets/screenshot.png)
+
+*Preview of the default theme. Everything you see — colours, background, name,
+size — is configurable; see [Branding](docs/branding.md).*
+
 ## How updating works
 
 1. The launcher downloads a **manifest** (`version.json`) from the patch server.
@@ -25,27 +30,52 @@ The launcher never deletes local files; it only adds and updates. Files such as
 | `Launcher.Core`  | UI-free core: manifest parsing, diffing, downloading, verification. |
 | `Launcher.App`   | Avalonia GUI: progress window and client launch.                    |
 
-## Building
+## Quickstart — from zero to a launcher
 
-The build runs inside a .NET SDK container, so the host needs only Docker — no
-local .NET SDK install.
+You only need **Docker** on the build machine (no local .NET SDK). For a Windows
+host, use Docker Desktop and run `build.sh` from Git Bash/WSL.
 
 ```sh
-./build.sh                   # build the whole solution (Release)
-./build.sh manifest ARGS…    # run the manifest generator
-./build.sh publish [VERSION] # self-contained launcher for win-x64 + linux-x64 into ./out,
-                             #   plus out/launcher/launcher.json (VERSION defaults to today)
-./build.sh <dotnet args…>    # passthrough to dotnet inside the container
+# 1. Point the launcher at your patch host (one-time edit)
+#    src/Launcher.Core/LauncherConfig.cs → ManifestUrl, LauncherManifestUrl
+
+# 2. (optional) Brand it — colours, background, name, size
+#    src/Launcher.App/Branding/Branding.axaml  +  src/Launcher.App/Assets/
+
+# 3. Build the launcher binaries
+./build.sh publish 2026.06.10
+
+# 4. Take the binaries out of ./out/launcher/
+#    Launcher.App.exe  → Windows players       (rename e.g. to MumainLauncher.exe)
+#    Launcher.App      → Linux players          (rename e.g. to MumainLauncher)
+#    launcher.json     → upload to the patch host for self-update
+
+# 5. Generate the client manifest over your built client and upload everything
+./build.sh manifest --input /path/to/client
 ```
 
-`publish` produces `out/launcher/` containing both launcher binaries and
-`launcher.json`. Upload that directory to the patch host: the launcher reads
-`launcher.json` to update itself before updating the client.
+Full walkthrough: **[Building & extracting](docs/building.md)**.
 
 ## Documentation
 
-- [Releasing updates](docs/releasing-updates.md) — admin workflow: configuring
-  the patch URLs, publishing a client update, publishing a new launcher, and the
-  server directory layout.
-- [Manifest format](docs/manifest-format.md) — reference for `version.json` and
-  `launcher.json`.
+- **[Building & extracting](docs/building.md)** — Docker setup, every `build.sh`
+  command, where the output lands and which file to ship, plus a local test recipe.
+- **[Branding](docs/branding.md)** — change colours, background, fonts, window
+  size and the frame — all from one file.
+- **[Releasing updates](docs/releasing-updates.md)** — admin workflow: patch URLs,
+  publishing a client update, publishing a new launcher, server directory layout.
+- **[Manifest format](docs/manifest-format.md)** — reference for `version.json`
+  and `launcher.json`.
+- **[Player guide](docs/player-guide.md)** — how an end player installs and runs it.
+- **[Troubleshooting](docs/troubleshooting.md)** — Wine, Linux and packaging gotchas.
+
+## Roadmap
+
+See [docs/ROADMAP.md](docs/ROADMAP.md) for status and optional future work.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Use, modify and redistribute it freely; just keep
+the copyright and licence notice in copies and forks.
+
+Original author: [nolt](https://github.com/nolt).

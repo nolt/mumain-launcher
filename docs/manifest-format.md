@@ -1,5 +1,7 @@
 # Manifest format
 
+*[Wersja polska](manifest-format.pl.md)*
+
 Reference for the two JSON files the launcher reads from the patch host.
 
 ## `version.json` — client manifest
