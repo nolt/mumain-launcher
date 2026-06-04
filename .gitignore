@@ -12,3 +12,7 @@ out/
 # OS noise
 .DS_Store
 Thumbs.db
+
+# Generated mockup previews (regenerate with docs/mockups/*.py)
+docs/mockups/*.png
+docs/mockups/__pycache__/

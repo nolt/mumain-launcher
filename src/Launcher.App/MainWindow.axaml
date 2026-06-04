@@ -3,34 +3,173 @@
         xmlns:vm="using:Launcher.App.ViewModels"
         x:Class="Launcher.App.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="MuMain Launcher"
-        Width="520" Height="300"
+        Title="{DynamicResource BrandServerName}"
+        Width="{DynamicResource WindowWidth}"
+        Height="{DynamicResource WindowHeight}"
         CanResize="False"
+        WindowDecorations="None"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
         WindowStartupLocation="CenterScreen">
 
-    <Grid RowDefinitions="*,Auto,Auto" Margin="28">
+    <Window.Styles>
+        <!-- Progress bar in brand gold over a dark track. -->
+        <Style Selector="ProgressBar">
+            <Setter Property="Foreground" Value="{DynamicResource BrandAccentBrush}" />
+            <Setter Property="Background" Value="#55000000" />
+            <Setter Property="Height" Value="14" />
+            <Setter Property="MinHeight" Value="14" />
+            <Setter Property="CornerRadius" Value="7" />
+        </Style>
 
-        <TextBlock Grid.Row="0"
-                   Text="MuMain Launcher"
-                   FontSize="30" FontWeight="SemiBold"
-                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <!-- PLAY button: gold gradient, dark label. -->
+        <Style Selector="Button.play">
+            <Setter Property="Background" Value="{DynamicResource BrandAccentBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandButtonTextBrush}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="24,10" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.play:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource BrandGoldHighlightBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandButtonTextBrush}" />
+        </Style>
+        <Style Selector="Button.play:disabled /template/ ContentPresenter">
+            <Setter Property="Background" Value="#55A68A2D" />
+            <Setter Property="Foreground" Value="#88E0E0E0" />
+        </Style>
 
-        <StackPanel Grid.Row="1" Spacing="8" Margin="0,0,0,20">
-            <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap" />
-            <ProgressBar Minimum="0" Maximum="100"
-                         Value="{Binding ProgressValue}"
-                         IsIndeterminate="{Binding IsProgressIndeterminate}" />
-        </StackPanel>
+        <!-- Retry button: ghost outline in gold. -->
+        <Style Selector="Button.ghost">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BrandGoldBrush}" />
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandGoldBrush}" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="18,10" />
+        </Style>
+        <Style Selector="Button.ghost:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#22D4AF37" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BrandGoldBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandGoldHighlightBrush}" />
+        </Style>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal"
-                    HorizontalAlignment="Right" Spacing="12">
-            <Button Content="Retry"
-                    Command="{Binding RetryCommand}"
-                    IsVisible="{Binding CanRetry}" />
-            <Button Content="PLAY"
-                    Command="{Binding PlayCommand}"
-                    IsEnabled="{Binding CanPlay}"
-                    Width="130" />
-        </StackPanel>
-    </Grid>
+        <!-- Window caption buttons (minimise / close) drawn in gold. -->
+        <Style Selector="Button.caption">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#33D4AF37" />
+        </Style>
+        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#66C0392B" />
+        </Style>
+    </Window.Styles>
+
+    <!-- Rounded gold frame; clips the artwork to the corners. -->
+    <Panel>
+        <!-- Background + content; clipped so the artwork can't spill outward. -->
+        <Border CornerRadius="{DynamicResource WindowCornerRadius}"
+                Background="{DynamicResource BrandWindowBrush}"
+                ClipToBounds="True">
+            <Panel ClipToBounds="True">
+            <!-- Background art (swap Assets/background.jpg to rebrand).
+                 Nudged vertically by BackgroundOffsetY; any strip left uncovered
+                 at the bottom sits behind the opaque panel. -->
+            <Image Source="avares://Launcher.App/Assets/background.jpg" Stretch="UniformToFill">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="{DynamicResource BackgroundOffsetY}" />
+                </Image.RenderTransform>
+            </Image>
+
+            <!-- Light overall dim so the artwork isn't too loud (BrandArtDimColor). -->
+            <Border Background="{DynamicResource BrandArtDimBrush}" />
+
+            <Grid RowDefinitions="Auto,*,Auto">
+
+                <!-- Title bar: scrim + title (drag handle) with caption buttons on top. -->
+                <Panel Grid.Row="0">
+                    <Border Name="TitleBar"
+                            Background="{DynamicResource BrandTitleScrimBrush}"
+                            Padding="0,58,0,36"
+                            PointerPressed="OnTitleBarPressed">
+                        <StackPanel HorizontalAlignment="Center" Spacing="2">
+                            <TextBlock Text="{DynamicResource BrandServerName}"
+                                       Foreground="{DynamicResource BrandGoldBrush}"
+                                       FontSize="34" FontWeight="Bold" LetterSpacing="6"
+                                       HorizontalAlignment="Center">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect Color="#FF000000" BlurRadius="10" OffsetX="0" OffsetY="1" />
+                                </TextBlock.Effect>
+                            </TextBlock>
+                            <TextBlock Text="{DynamicResource BrandSubtitle}"
+                                       Foreground="{DynamicResource BrandTextDimBrush}"
+                                       FontSize="14" LetterSpacing="5"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" Spacing="2"
+                                HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Margin="0,6,8,0">
+                        <Button Classes="caption" Click="OnMinimise" ToolTip.Tip="Minimalizuj">
+                            <Path Stroke="{DynamicResource BrandGoldBrush}" StrokeThickness="1.6"
+                                  Data="M0,0 L12,0" />
+                        </Button>
+                        <Button Classes="caption close" Click="OnClose" ToolTip.Tip="Zamknij">
+                            <Path Stroke="{DynamicResource BrandGoldBrush}" StrokeThickness="1.6"
+                                  Data="M0,0 L11,11 M0,11 L11,0" />
+                        </Button>
+                    </StackPanel>
+                </Panel>
+
+                <!-- Row 1 is empty so the artwork shows through. -->
+
+                <!-- Bottom panel: status, progress, actions. -->
+                <Border Grid.Row="2"
+                        Background="{DynamicResource BrandPanelBrush}"
+                        BorderBrush="{DynamicResource BrandGoldBrush}"
+                        BorderThickness="0,1,0,0"
+                        Padding="28,15,28,23">
+                    <StackPanel Spacing="9">
+                        <TextBlock Text="{Binding StatusText}"
+                                   Foreground="{DynamicResource BrandTextBrush}"
+                                   TextWrapping="Wrap" />
+                        <ProgressBar Minimum="0" Maximum="100"
+                                     Value="{Binding ProgressValue}"
+                                     IsIndeterminate="{Binding IsProgressIndeterminate}" />
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right" Spacing="12"
+                                    Margin="0,9,0,0">
+                            <Button Classes="ghost" Content="Ponów"
+                                    Command="{Binding RetryCommand}"
+                                    IsVisible="{Binding CanRetry}" />
+                            <Button Classes="play" Content="GRAJ"
+                                    Command="{Binding PlayCommand}"
+                                    IsEnabled="{Binding CanPlay}"
+                                    Width="150" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Panel>
+        </Border>
+
+        <!-- Gold frame painted last, so it always sits on top of the background
+             art — whatever image is dropped into Assets/ can never cover it.
+             Non-interactive so it doesn't block dragging or the caption buttons. -->
+        <Border CornerRadius="{DynamicResource WindowCornerRadius}"
+                BorderBrush="{DynamicResource BrandGoldBrush}"
+                BorderThickness="{DynamicResource WindowBorderThickness}"
+                IsHitTestVisible="False" />
+    </Panel>
 </Window>

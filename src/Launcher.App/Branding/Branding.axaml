@@ -1,0 +1,66 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+      ════════════════════════════════════════════════════════════════════════
+      BRANDING — edit this file (and the files in Assets/) to skin the launcher
+      for your server, then rebuild with ./build.sh. See docs/branding.md.
+      Nothing here touches the launcher's logic.
+      ════════════════════════════════════════════════════════════════════════
+    -->
+
+    <!-- ── Window text ──────────────────────────────────────────────────── -->
+    <!-- Server name shown as the title. Enter it UPPERCASE for the styled look. -->
+    <x:String x:Key="BrandServerName">NAZWA SERWERA</x:String>
+    <x:String x:Key="BrandSubtitle">LAUNCHER</x:String>
+
+    <!-- ── Window size (logical pixels; the OS scales for DPI) ──────────────-->
+    <x:Double x:Key="WindowWidth">760</x:Double>
+    <x:Double x:Key="WindowHeight">475</x:Double>
+
+    <!-- Vertical nudge of the background image, in logical pixels. Negative moves
+         the artwork up (e.g. to lift a centred watermark above the bottom panel).
+         0 = centred. Tune this after swapping Assets/background.jpg. -->
+    <x:Double x:Key="BackgroundOffsetY">-80</x:Double>
+
+    <!-- ── Window frame (borderless window with our own gold frame) ──────────-->
+    <CornerRadius x:Key="WindowCornerRadius">0</CornerRadius>   <!-- 0 = square corners -->
+    <Thickness x:Key="WindowBorderThickness">2</Thickness>     <!-- gold frame width -->
+    <!-- BrandGoldBrush (below) is the frame colour. -->
+
+
+    <!-- ── Colours (hex is #AARRGGBB — first two digits are opacity) ─────────
+         Defaults match the server website: gold #d4af37, text #e0e0e0. -->
+    <Color x:Key="BrandGoldColor">#FFD4AF37</Color>          <!-- primary gold -->
+    <Color x:Key="BrandGoldDarkColor">#FFA68A2D</Color>      <!-- gradient end -->
+    <Color x:Key="BrandGoldHighlightColor">#FFFFD700</Color> <!-- hover / glow -->
+    <Color x:Key="BrandTextColor">#FFE0E0E0</Color>          <!-- status text -->
+    <Color x:Key="BrandTextDimColor">#FFB4AA8C</Color>       <!-- subtitle -->
+    <Color x:Key="BrandButtonTextColor">#FF1A1408</Color>    <!-- text on the gold PLAY button -->
+    <Color x:Key="BrandPanelColor">#F2141414</Color>         <!-- bottom panel (0.95 opacity; hides art behind it) -->
+    <Color x:Key="BrandWindowColor">#FF0A0A0A</Color>        <!-- behind the background image -->
+    <Color x:Key="BrandArtDimColor">#40000000</Color>        <!-- overall dim over the art (0x40 ≈ 25%); #00000000 = none -->
+
+    <!-- ── Brushes derived from the colours above (usually no need to edit) ──-->
+    <SolidColorBrush x:Key="BrandGoldBrush" Color="{StaticResource BrandGoldColor}" />
+    <SolidColorBrush x:Key="BrandGoldHighlightBrush" Color="{StaticResource BrandGoldHighlightColor}" />
+    <SolidColorBrush x:Key="BrandTextBrush" Color="{StaticResource BrandTextColor}" />
+    <SolidColorBrush x:Key="BrandTextDimBrush" Color="{StaticResource BrandTextDimColor}" />
+    <SolidColorBrush x:Key="BrandButtonTextBrush" Color="{StaticResource BrandButtonTextColor}" />
+    <SolidColorBrush x:Key="BrandPanelBrush" Color="{StaticResource BrandPanelColor}" />
+    <SolidColorBrush x:Key="BrandWindowBrush" Color="{StaticResource BrandWindowColor}" />
+    <SolidColorBrush x:Key="BrandArtDimBrush" Color="{StaticResource BrandArtDimColor}" />
+
+    <!-- Gold gradient used by the PLAY button and the progress bar. -->
+    <LinearGradientBrush x:Key="BrandAccentBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Offset="0" Color="{StaticResource BrandGoldColor}" />
+        <GradientStop Offset="1" Color="{StaticResource BrandGoldDarkColor}" />
+    </LinearGradientBrush>
+
+    <!-- Dark scrim behind the title so it stays readable over any background. -->
+    <LinearGradientBrush x:Key="BrandTitleScrimBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Offset="0" Color="#CC000000" />
+        <GradientStop Offset="1" Color="#00000000" />
+    </LinearGradientBrush>
+
+</ResourceDictionary>

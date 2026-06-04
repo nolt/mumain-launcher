@@ -13,6 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Branding artwork (background, optional logo) embedded into the binary. -->
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Launcher.Core\Launcher.Core.csproj" />
   </ItemGroup>
 
