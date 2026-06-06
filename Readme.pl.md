@@ -39,7 +39,7 @@ Na Windows użyj Docker Desktop i uruchamiaj `build.sh` z Git Bash/WSL.
 # 1. Wskaż launcherowi Twój serwer patchy (jednorazowa edycja)
 #    src/Launcher.Core/LauncherConfig.cs → ManifestUrl, LauncherManifestUrl
 
-# 2. (opcjonalnie) Zbranduj — kolory, tło, nazwa, rozmiar
+# 2. (opcjonalnie) Zbranduj — kolory, tło, nazwa/logo, rozmiar
 #    src/Launcher.App/Branding/Branding.axaml  +  src/Launcher.App/Assets/
 
 # 3. Zbuduj binarki launchera (nazwa pliku domyślnie MumainLauncher;
@@ -62,7 +62,7 @@ Pełny przewodnik: **[Budowanie i wyciąganie](docs/building.pl.md)**.
 - **[Budowanie i wyciąganie](docs/building.pl.md)** — konfiguracja Dockera, każda
   komenda `build.sh`, gdzie lądują pliki i co wysłać, oraz lokalny test.
 - **[Wygląd / branding](docs/branding.pl.md)** — zmiana kolorów, tła, czcionek,
-  rozmiaru okna i ramki — wszystko z jednego pliku.
+  tekstowego tytułu lub logo, rozmiaru okna i ramki — wszystko z jednego pliku.
 - **[Wydawanie aktualizacji](docs/releasing-updates.pl.md)** — workflow admina:
   adresy patchy, wydanie aktualizacji klienta, wydanie nowego launchera, układ
   katalogów na serwerze.

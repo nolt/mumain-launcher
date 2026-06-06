@@ -66,10 +66,14 @@ per the "someone building for themselves" requirement).
   `install-linux.sh`, which registers a matching `StartupWMClass` `.desktop` entry
   under `~/.local/share/`. Source PNG: `packaging/linux/icon.png` (replace alongside
   `icon.ico` when rebranding).
+- **Logo title** — the text title can be swapped for an image via the
+  `BrandTitleMode` branding resource (`Text` | `Logo` | `None`). `Logo` shows
+  `Assets/logo.png` (`ShowLogo` in `MainWindowViewModel`, wired in
+  `MainWindow.axaml`); replace it with your own transparent PNG. Documented in
+  `branding.md`.
 
 ### Still optional / not done
 
-- A `logo.png` slot instead of the text title (layout leaves room; not wired yet).
 - Custom embedded font (kept Inter — safest under Wine).
 - Trimming to shrink the ~47 MB binary (needs a GUI test — Avalonia + trimming
   can break reflection-based XAML).

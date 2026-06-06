@@ -39,7 +39,7 @@ host, use Docker Desktop and run `build.sh` from Git Bash/WSL.
 # 1. Point the launcher at your patch host (one-time edit)
 #    src/Launcher.Core/LauncherConfig.cs → ManifestUrl, LauncherManifestUrl
 
-# 2. (optional) Brand it — colours, background, name, size
+# 2. (optional) Brand it — colours, background, name/logo, size
 #    src/Launcher.App/Branding/Branding.axaml  +  src/Launcher.App/Assets/
 
 # 3. Build the launcher binaries (file name defaults to MumainLauncher;
@@ -61,8 +61,8 @@ Full walkthrough: **[Building & extracting](docs/building.md)**.
 
 - **[Building & extracting](docs/building.md)** — Docker setup, every `build.sh`
   command, where the output lands and which file to ship, plus a local test recipe.
-- **[Branding](docs/branding.md)** — change colours, background, fonts, window
-  size and the frame — all from one file.
+- **[Branding](docs/branding.md)** — change colours, background, fonts, a text
+  title or logo, window size and the frame — all from one file.
 - **[Releasing updates](docs/releasing-updates.md)** — admin workflow: patch URLs,
   publishing a client update, publishing a new launcher, server directory layout.
 - **[Manifest format](docs/manifest-format.md)** — reference for `version.json`
