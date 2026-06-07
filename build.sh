@@ -25,7 +25,13 @@ LAUNCHER_DIR="$ROOT/out/launcher"
 LAUNCHER_NAME="${LAUNCHER_NAME:-MumainLauncher}"
 
 run() {
-    docker run --rm -v "$ROOT":/src -w /src "$IMAGE" "$@"
+    # --user: write build outputs (out/, bin/, obj/) as the host user, not root,
+    #   so they can be cleaned without sudo. -e HOME=/tmp: dotnet needs a writable
+    #   $HOME for its first-run/.dotnet when running as a non-root uid.
+    docker run --rm \
+        --user "$(id -u):$(id -g)" \
+        -e HOME=/tmp \
+        -v "$ROOT":/src -w /src "$IMAGE" "$@"
 }
 
 # Writes out/launcher/launcher.json describing both published binaries (siblings of the manifest).
