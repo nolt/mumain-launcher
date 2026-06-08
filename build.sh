@@ -31,6 +31,9 @@ run() {
     docker run --rm \
         --user "$(id -u):$(id -g)" \
         -e HOME=/tmp \
+        -e DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK=1 \
+        -e DOTNET_NOLOGO=1 \
+        -e DOTNET_CLI_TELEMETRY_OPTOUT=1 \
         -v "$ROOT":/src -w /src "$IMAGE" "$@"
 }
 
