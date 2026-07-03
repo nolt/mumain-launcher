@@ -57,6 +57,33 @@
             <Setter Property="Foreground" Value="{DynamicResource BrandGoldHighlightBrush}" />
         </Style>
 
+        <!-- Link button: borderless dim text (the bottom-left "change client" action). -->
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandTextDimBrush}" />
+            <Setter Property="Padding" Value="4,8" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandGoldBrush}" />
+        </Style>
+
+        <!-- Choice card: full-width option button in the client-type chooser. -->
+        <Style Selector="Button.choice">
+            <Setter Property="Background" Value="#22D4AF37" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BrandGoldBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource BrandTextBrush}" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
+        <Style Selector="Button.choice:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#44D4AF37" />
+        </Style>
+
         <!-- Window caption buttons (minimise / close) drawn in gold. -->
         <Style Selector="Button.caption">
             <Setter Property="Width" Value="40" />
@@ -170,17 +197,24 @@
                         <ProgressBar Minimum="0" Maximum="100"
                                      Value="{Binding ProgressValue}"
                                      IsIndeterminate="{Binding IsProgressIndeterminate}" />
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Right" Spacing="12"
-                                    Margin="0,9,0,0">
-                            <Button Classes="ghost" Content="{DynamicResource UiRetry}"
-                                    Command="{Binding RetryCommand}"
-                                    IsVisible="{Binding CanRetry}" />
-                            <Button Classes="play" Content="{DynamicResource UiPlay}"
-                                    Command="{Binding PlayCommand}"
-                                    IsEnabled="{Binding CanPlay}"
-                                    Width="150" />
-                        </StackPanel>
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,9,0,0">
+                            <!-- Change the client type (native vs Wine); Linux only. -->
+                            <Button Grid.Column="0" Classes="link"
+                                    Content="{DynamicResource UiChangeClient}"
+                                    Command="{Binding ChangeClientCommand}"
+                                    IsVisible="{Binding IsLinux}"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                        HorizontalAlignment="Right" Spacing="12">
+                                <Button Classes="ghost" Content="{DynamicResource UiRetry}"
+                                        Command="{Binding RetryCommand}"
+                                        IsVisible="{Binding CanRetry}" />
+                                <Button Classes="play" Content="{DynamicResource UiPlay}"
+                                        Command="{Binding PlayCommand}"
+                                        IsEnabled="{Binding CanPlay}"
+                                        Width="150" />
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -239,6 +273,57 @@
                         <Button Classes="ghost" Content="{DynamicResource UiCancel}" Command="{Binding CancelCommand}" />
                         <Button Classes="play" Content="{DynamicResource UiSave}" Command="{Binding SaveCommand}" Width="120" />
                     </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+
+        <!-- Client-type chooser overlay (Linux only): pick the native client or the
+             Windows client via Wine. Shown before the update runs on first launch, and
+             re-openable via the bottom-left button. The choice is saved to
+             launcher.local.json and selects which manifest the updater fetches. -->
+        <Border IsVisible="{Binding IsClientChoiceOpen}" Background="#CC000000">
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="470"
+                    Background="{DynamicResource BrandPanelBrush}"
+                    BorderBrush="{DynamicResource BrandGoldBrush}" BorderThickness="1"
+                    CornerRadius="8" Padding="30,26">
+                <StackPanel Spacing="18">
+                    <TextBlock Text="{DynamicResource UiClientChoiceTitle}"
+                               Foreground="{DynamicResource BrandGoldBrush}"
+                               FontSize="20" FontWeight="Bold" LetterSpacing="3"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{DynamicResource UiClientChoiceIntro}"
+                               Foreground="{DynamicResource BrandTextDimBrush}"
+                               TextWrapping="Wrap" TextAlignment="Center" />
+
+                    <StackPanel Spacing="12">
+                        <Button Classes="choice" Command="{Binding ChooseNativeCommand}"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="{DynamicResource UiClientNative}"
+                                           Foreground="{DynamicResource BrandGoldBrush}"
+                                           FontWeight="Bold" FontSize="15" />
+                                <TextBlock Text="{DynamicResource UiClientNativeDesc}"
+                                           Foreground="{DynamicResource BrandTextDimBrush}"
+                                           FontSize="12" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="choice" Command="{Binding ChooseWineCommand}"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="{DynamicResource UiClientWine}"
+                                           Foreground="{DynamicResource BrandTextBrush}"
+                                           FontWeight="Bold" FontSize="15" />
+                                <TextBlock Text="{DynamicResource UiClientWineDesc}"
+                                           Foreground="{DynamicResource BrandTextDimBrush}"
+                                           FontSize="12" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Button Classes="ghost" Content="{DynamicResource UiCancel}"
+                            Command="{Binding CancelClientChoiceCommand}"
+                            IsVisible="{Binding CanCancelClientChoice}"
+                            HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>
         </Border>

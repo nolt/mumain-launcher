@@ -36,16 +36,21 @@ informacji → Uruchom mimo to* (launcher nie jest podpisany cyfrowo).
 
 ## Linux
 
-Klient działa przez **Wine**, więc najpierw zainstaluj Wine (np.
-`sudo apt install wine`). Następnie uruchom launcher **natywnie** — nie przez Wine:
+Uruchom launcher **natywnie** — nie przez Wine:
 
 ```sh
 chmod +x MumainLauncher   # raz, w razie potrzeby
 ./MumainLauncher
 ```
 
-Kliknij **GRAJ** po zakończeniu aktualizacji; launcher sam uruchomi klienta przez
-Wine.
+Przy pierwszym starcie zapyta, którego klienta chcesz:
+
+- **Native Linux (zalecane)** — uruchamia grę bezpośrednio, bez Wine. Zainstaluj
+  najpierw jego biblioteki: `sudo apt install libturbojpeg0 libglu1-mesa libglvnd0`.
+- **Klient Windows przez Wine** — zainstaluj najpierw Wine (np. `sudo apt install wine`).
+
+Możesz to zmienić później przyciskiem **Wersja klienta…** na dole po lewej stronie
+launchera. Kliknij **GRAJ** po zakończeniu aktualizacji.
 
 ### Ikona i wpis w menu (opcjonalnie)
 

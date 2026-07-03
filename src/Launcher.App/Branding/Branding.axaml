@@ -45,6 +45,14 @@
     <x:String x:Key="UiMusic">Music</x:String>
     <x:String x:Key="UiSave">Save</x:String>
     <x:String x:Key="UiCancel">Cancel</x:String>
+    <!-- Client-type chooser (Linux only) -->
+    <x:String x:Key="UiChangeClient">Client version…</x:String>
+    <x:String x:Key="UiClientChoiceTitle">CHOOSE YOUR CLIENT</x:String>
+    <x:String x:Key="UiClientChoiceIntro">Pick how you want to run the game on Linux. You can change this later from the launcher.</x:String>
+    <x:String x:Key="UiClientNative">Native Linux  (recommended)</x:String>
+    <x:String x:Key="UiClientNativeDesc">Runs the native build directly — faster, no Wine needed. Requires libturbojpeg0, libglu1-mesa and libglvnd0.</x:String>
+    <x:String x:Key="UiClientWine">Windows client via Wine</x:String>
+    <x:String x:Key="UiClientWineDesc">Runs the Windows client through Wine. Use this if the native build gives you trouble.</x:String>
 
     <!-- Window size (logical pixels; the OS scales for DPI) -->
     <x:Double x:Key="WindowWidth">760</x:Double>

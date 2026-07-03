@@ -14,12 +14,18 @@ namespace Launcher.App.ViewModels;
 /// </summary>
 public sealed class MainWindowViewModel : ViewModelBase
 {
-    private readonly ClientUpdater _updater;
-    private readonly ClientLauncher _launcher;
+    private readonly Func<ClientProfile, ClientUpdater> _updaterFactory;
+    private readonly Func<ClientProfile, ClientLauncher> _launcherFactory;
+    private readonly IClientModeStore _clientModeStore;
+    private readonly bool _isWindows;
     private readonly LauncherSelfUpdater _selfUpdater;
     private readonly Action _closeWindow;
     private readonly Action _restart;
     private readonly CancellationTokenSource _cancellation = new();
+
+    private ClientUpdater? _updater;
+    private ClientLauncher? _launcher;
+    private TaskCompletionSource? _clientChoicePending;
 
     private string _statusText = Text("UiStarting", "Starting…");
     private double _progressValue;
@@ -27,11 +33,23 @@ public sealed class MainWindowViewModel : ViewModelBase
     private bool _canPlay;
     private bool _canRetry;
     private bool _isSettingsOpen;
+    private bool _isClientChoiceOpen;
+    private bool _canCancelClientChoice;
 
-    public MainWindowViewModel(ClientUpdater updater, ClientLauncher launcher, LauncherSelfUpdater selfUpdater, ClientConfig clientConfig, Action closeWindow, Action restart)
+    public MainWindowViewModel(
+        Func<ClientProfile, ClientUpdater> updaterFactory,
+        Func<ClientProfile, ClientLauncher> launcherFactory,
+        IClientModeStore clientModeStore,
+        bool isWindows,
+        LauncherSelfUpdater selfUpdater,
+        ClientConfig clientConfig,
+        Action closeWindow,
+        Action restart)
     {
-        _updater = updater;
-        _launcher = launcher;
+        _updaterFactory = updaterFactory;
+        _launcherFactory = launcherFactory;
+        _clientModeStore = clientModeStore;
+        _isWindows = isWindows;
         _selfUpdater = selfUpdater;
         _closeWindow = closeWindow;
         _restart = restart;
@@ -39,6 +57,10 @@ public sealed class MainWindowViewModel : ViewModelBase
         RetryCommand = new RelayCommand(() => _ = RunUpdateAsync(), () => CanRetry);
         Settings = new SettingsViewModel(clientConfig, () => IsSettingsOpen = false);
         OpenSettingsCommand = new RelayCommand(OpenSettings);
+        ChooseNativeCommand = new RelayCommand(() => OnClientChosen(ClientMode.Native));
+        ChooseWineCommand = new RelayCommand(() => OnClientChosen(ClientMode.Wine));
+        ChangeClientCommand = new RelayCommand(OpenClientChoice);
+        CancelClientChoiceCommand = new RelayCommand(CancelClientChoice);
     }
 
     public RelayCommand PlayCommand { get; }
@@ -47,6 +69,14 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     public RelayCommand OpenSettingsCommand { get; }
 
+    public RelayCommand ChooseNativeCommand { get; }
+
+    public RelayCommand ChooseWineCommand { get; }
+
+    public RelayCommand ChangeClientCommand { get; }
+
+    public RelayCommand CancelClientChoiceCommand { get; }
+
     public SettingsViewModel Settings { get; }
 
     public bool IsSettingsOpen
@@ -54,6 +84,26 @@ public sealed class MainWindowViewModel : ViewModelBase
         get => _isSettingsOpen;
         private set => SetField(ref _isSettingsOpen, value);
     }
+
+    /// <summary>Whether the client-type (native vs Wine) chooser overlay is showing.</summary>
+    public bool IsClientChoiceOpen
+    {
+        get => _isClientChoiceOpen;
+        private set => SetField(ref _isClientChoiceOpen, value);
+    }
+
+    /// <summary>
+    /// Cancel is offered only when re-opening the chooser to change an existing choice,
+    /// not on the mandatory first-run prompt.
+    /// </summary>
+    public bool CanCancelClientChoice
+    {
+        get => _canCancelClientChoice;
+        private set => SetField(ref _canCancelClientChoice, value);
+    }
+
+    /// <summary>The client chooser and its button only exist on Linux; Windows never sees them.</summary>
+    public bool IsLinux => !_isWindows;
 
     // Title area driven by the BrandTitleMode branding resource (Text | Logo | None).
     // Constant per build, so plain getters (no change notification needed).
@@ -105,11 +155,73 @@ public sealed class MainWindowViewModel : ViewModelBase
         }
     }
 
-    /// <summary>Begins the update. Called once, when the window is shown.</summary>
-    public Task StartAsync() => RunUpdateAsync();
+    /// <summary>
+    /// Begins the flow when the window is shown: resolve which client to run (prompting
+    /// once on Linux if the choice is not stored yet), then run the update. On Windows
+    /// this resolves immediately to the Windows client - no prompt, no branching.
+    /// </summary>
+    public async Task StartAsync()
+    {
+        if (!_isWindows && _clientModeStore.Load() is null)
+        {
+            // First run on Linux: hold here until the player picks a client. The choice
+            // provisions the updater/launcher and completes this task.
+            _clientChoicePending = new TaskCompletionSource();
+            OpenClientChoice(canCancel: false);
+            await _clientChoicePending.Task;
+        }
+        else
+        {
+            var mode = _isWindows ? default : _clientModeStore.Load()!.Value;
+            Provision(mode);
+        }
+
+        await RunUpdateAsync();
+    }
 
     /// <summary>Cancels an in-flight update, e.g. when the window is closing.</summary>
     public void Cancel() => _cancellation.Cancel();
+
+    // Builds the updater/launcher for the chosen client. On Windows the mode is ignored.
+    private void Provision(ClientMode mode)
+    {
+        var profile = ClientProfileResolver.Resolve(_isWindows, mode);
+        _updater = _updaterFactory(profile);
+        _launcher = _launcherFactory(profile);
+    }
+
+    private void OpenClientChoice() => OpenClientChoice(canCancel: true);
+
+    private void OpenClientChoice(bool canCancel)
+    {
+        CanCancelClientChoice = canCancel;
+        IsClientChoiceOpen = true;
+    }
+
+    private void CancelClientChoice()
+    {
+        // Only reachable from the "change client" button (never the first-run prompt).
+        IsClientChoiceOpen = false;
+    }
+
+    private void OnClientChosen(ClientMode mode)
+    {
+        _clientModeStore.Save(mode);
+        Provision(mode);
+        IsClientChoiceOpen = false;
+
+        if (_clientChoicePending is { } pending)
+        {
+            // First-run prompt: let StartAsync continue into the update.
+            _clientChoicePending = null;
+            pending.SetResult();
+        }
+        else
+        {
+            // Changed the client after the fact: re-check against the new manifest.
+            _ = RunUpdateAsync();
+        }
+    }
 
     private async Task RunUpdateAsync()
     {
@@ -128,7 +240,9 @@ public sealed class MainWindowViewModel : ViewModelBase
                 return;
             }
 
-            var result = await _updater.UpdateAsync(progress, _cancellation.Token);
+            // Non-null: StartAsync provisions before the first update, and Retry only
+            // fires after that.
+            var result = await _updater!.UpdateAsync(progress, _cancellation.Token);
             IsProgressIndeterminate = false;
             ProgressValue = 100;
             StatusText = result.WasUpToDate
@@ -190,7 +304,9 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         try
         {
-            _launcher.Launch();
+            // Non-null: Play is only enabled (CanPlay) after a successful update, which
+            // runs after provisioning.
+            _launcher!.Launch();
             _closeWindow();
         }
         catch (ClientLaunchException)

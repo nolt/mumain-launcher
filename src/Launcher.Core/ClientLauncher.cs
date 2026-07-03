@@ -44,18 +44,25 @@ public sealed class ClientLauncher
         }
         catch (Win32Exception ex)
         {
-            throw new ClientLaunchException(DescribeFailure(command.FileName, isWindows), ex);
+            throw new ClientLaunchException(DescribeFailure(command.FileName, isWindows, linuxConfig?.Mode), ex);
         }
     }
 
-    private static string DescribeFailure(string fileName, bool isWindows)
+    private static string DescribeFailure(string fileName, bool isWindows, ClientMode? mode)
     {
-        if (!isWindows)
+        if (isWindows)
         {
-            return $"Could not start the client through '{fileName}'. "
-                + $"Is Wine installed, or set wineCommand in {LinuxLaunchConfig.FileName}?";
+            return $"Could not start the client: {fileName}";
         }
 
-        return $"Could not start the client: {fileName}";
+        if (mode == ClientMode.Native)
+        {
+            return $"Could not start the native client '{fileName}'. "
+                + "Make sure it is executable and its runtime libraries are installed "
+                + "(libturbojpeg0, libglu1-mesa, libglvnd0).";
+        }
+
+        return $"Could not start the client through '{fileName}'. "
+            + $"Is Wine installed, or set wineCommand in {LinuxLaunchConfig.FileName}?";
     }
 }

@@ -9,11 +9,18 @@ public sealed class ClientUpdater
 {
     private readonly IPatchSource _source;
     private readonly string _clientDirectory;
+    private readonly string? _executableToMark;
 
-    public ClientUpdater(IPatchSource source, string clientDirectory)
+    /// <param name="executableToMark">
+    /// Relative path of a client executable to mark executable (chmod +x) after the
+    /// update, for the native Linux client whose downloaded <c>Main</c> ELF would
+    /// otherwise land without the exec bit. Null (Windows / Wine) skips this.
+    /// </param>
+    public ClientUpdater(IPatchSource source, string clientDirectory, string? executableToMark = null)
     {
         _source = source;
         _clientDirectory = clientDirectory;
+        _executableToMark = executableToMark;
     }
 
     public async Task<UpdateResult> UpdateAsync(IProgress<UpdateProgress>? progress = null, CancellationToken cancellationToken = default)
@@ -26,6 +33,7 @@ public sealed class ClientUpdater
 
         await DownloadAsync(plan, progress, cancellationToken);
         await cache.SaveAsync(cancellationToken);
+        MarkExecutable();
 
         progress?.Report(new UpdateProgress(
             UpdatePhase.Completed, null,
@@ -33,6 +41,29 @@ public sealed class ClientUpdater
             plan.TotalBytes, plan.TotalBytes));
 
         return new UpdateResult(manifest.Version, plan.FilesToDownload.Count);
+    }
+
+    // The native Linux Main is downloaded as a plain file, so it arrives without the
+    // exec bit; set 0755 (mirrors the launcher self-update) so it can be started. No-op
+    // on Windows/Wine (null target), and File.SetUnixFileMode is unsupported there.
+    private void MarkExecutable()
+    {
+        if (_executableToMark is null || OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var path = Path.Combine(_clientDirectory, _executableToMark.Replace('/', Path.DirectorySeparatorChar));
+        if (!File.Exists(path))
+        {
+            return;
+        }
+
+        File.SetUnixFileMode(
+            path,
+            UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute
+            | UnixFileMode.GroupRead | UnixFileMode.GroupExecute
+            | UnixFileMode.OtherRead | UnixFileMode.OtherExecute);
     }
 
     private async Task<UpdatePlan> BuildPlanAsync(Manifest manifest, LocalManifestCache cache, IProgress<UpdateProgress>? progress, CancellationToken cancellationToken)

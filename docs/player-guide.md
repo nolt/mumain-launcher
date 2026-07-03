@@ -36,16 +36,21 @@ Run anyway* (the launcher isn't code-signed).
 
 ## Linux
 
-The client runs through **Wine**, so install Wine first (e.g.
-`sudo apt install wine`). Then run the launcher **natively** — not through Wine:
+Run the launcher **natively** — not through Wine:
 
 ```sh
 chmod +x MumainLauncher   # once, if needed
 ./MumainLauncher
 ```
 
-Press **PLAY** when the update completes; the launcher starts the client through
-Wine for you.
+On the first run it asks which client you want:
+
+- **Native Linux (recommended)** — runs the game directly, no Wine. Install its
+  runtime libraries first: `sudo apt install libturbojpeg0 libglu1-mesa libglvnd0`.
+- **Windows client via Wine** — install Wine first (e.g. `sudo apt install wine`).
+
+You can switch later with the **Client version…** button at the bottom-left of the
+launcher. Press **PLAY** when the update completes.
 
 ### App icon & menu entry (optional)
 
