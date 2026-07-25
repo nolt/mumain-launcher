@@ -22,6 +22,11 @@ size — is configurable; see [Branding](docs/branding.md).*
 The launcher never deletes local files; it only adds and updates. Files such as
 `config.ini`, logs and caches are therefore left untouched.
 
+On Linux the player chooses once, in the launcher, between the **native** client
+(`Main` + `.so`, from `version-linux.json`) run directly and the **Windows** client
+via Wine (from `version.json`). The two share their `Data/` assets, so switching
+re-downloads only the differing binaries. See the [Player guide](docs/player-guide.md).
+
 ## Projects
 
 | Project          | Role                                                                |
@@ -65,10 +70,11 @@ Full walkthrough: **[Building & extracting](docs/building.md)**.
   title or logo, window size and the frame — all from one file.
 - **[Releasing updates](docs/releasing-updates.md)** — admin workflow: patch URLs,
   publishing a client update, publishing a new launcher, server directory layout.
-- **[Manifest format](docs/manifest-format.md)** — reference for `version.json`
-  and `launcher.json`.
+- **[Manifest format](docs/manifest-format.md)** — reference for `version.json`,
+  `version-linux.json` and `launcher.json`.
 - **[Player guide](docs/player-guide.md)** — how an end player installs and runs it.
-- **[Troubleshooting](docs/troubleshooting.md)** — Wine, Linux and packaging gotchas.
+- **[Troubleshooting](docs/troubleshooting.md)** — native client, Wine, Linux and
+  packaging gotchas.
 
 ## Roadmap
 

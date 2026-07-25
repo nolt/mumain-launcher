@@ -2,7 +2,8 @@
 
 Working notes so we can pick the project back up. The launcher is **functional and
 tested end-to-end** (fresh install, update of an existing client, custom Wine
-prefix, client launch). Local repo only — nothing pushed yet.
+prefix, native/Wine client choice, client launch), pushed to `main` and running in
+production.
 
 ## Done
 
@@ -17,6 +18,12 @@ prefix, client launch). Local repo only — nothing pushed yet.
 5. **Self-update** — separate `launcher.json` (per-RID), silent rename+restart swap.
 6. **Build integration + docs** — side-by-side server layout, `releasing-updates.md`,
    `manifest-format.md`.
+7. **Native Linux client option** — Linux players pick once between the native client
+   (`Main` + `.so`, `version-linux.json`) and the Windows client via Wine
+   (`version.json`); the choice gates which manifest is fetched, the two share their
+   `Data/` assets, and Windows never branches (always `Main.exe`). Changeable with the
+   **Client version…** button; the downloaded native `Main` is marked executable after
+   the update.
 
 Plus fixes from testing: native libraries embedded in the single file
 (`IncludeNativeLibrariesForSelfExtract` + compression, ~47 MB), client executable

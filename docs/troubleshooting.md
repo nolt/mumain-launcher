@@ -37,8 +37,27 @@ causes, most common first:
 ## Linux: client executable name is case-sensitive
 
 Linux filesystems are case-sensitive; Windows isn't. The client executable is
-`Main.exe` (capital **M**). `LauncherConfig.ClientExecutableName` must match the
-real file exactly, or Wine will report "file not found" when you press **PLAY**.
+`Main.exe` (capital **M**). `LauncherConfig.WindowsClientExecutableName` must match
+the real file exactly, or Wine will report "file not found" when you press **PLAY**.
+
+## Linux: the native client won't start
+
+On Linux the launcher offers two clients — the **native** build (`Main` + `.so`, run
+directly) or the **Windows** client through Wine — chosen on first run and changeable
+with the **Client version…** button (bottom-left). The choice is stored in
+`launcher.local.json` (`"mode": "native"` or `"wine"`).
+
+If the native client fails to start, it's almost always a missing runtime library.
+Install its dependencies:
+
+```sh
+sudo apt install libturbojpeg0 libglu1-mesa libglvnd0
+```
+
+Still no luck? Switch to **Windows client via Wine** with the **Client version…**
+button — it runs a different client that many systems start more readily. The
+downloaded native `Main` is marked executable automatically after the update, so a
+missing execute bit is not the cause here.
 
 ## Choosing a Wine prefix or binary (Linux)
 
@@ -52,7 +71,9 @@ drop a `launcher.local.json` next to the launcher:
 ```
 
 Both fields are optional. The file is per-machine and never downloaded or
-overwritten by the updater.
+overwritten by the updater. They apply to the **Windows client via Wine** only — the
+native Linux client ignores them and runs `./Main` directly. This same file also
+stores the client choice (`"mode": "native"` or `"wine"`).
 
 ## Linux: the window border / corners look off
 

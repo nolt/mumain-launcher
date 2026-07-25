@@ -37,9 +37,28 @@ przyczyny, od najczęstszej:
 ## Linux: nazwa pliku klienta jest wrażliwa na wielkość liter
 
 Systemy plików Linuksa rozróżniają wielkość liter; Windows nie. Plik wykonywalny
-klienta to `Main.exe` (wielkie **M**). `LauncherConfig.ClientExecutableName` musi
-dokładnie odpowiadać prawdziwemu plikowi, inaczej Wine zgłosi „nie znaleziono
+klienta to `Main.exe` (wielkie **M**). `LauncherConfig.WindowsClientExecutableName`
+musi dokładnie odpowiadać prawdziwemu plikowi, inaczej Wine zgłosi „nie znaleziono
 pliku" po kliknięciu **GRAJ**.
+
+## Linux: natywny klient się nie uruchamia
+
+Na Linuksie launcher daje dwóch klientów — **natywnego** (`Main` + `.so`, odpalanego
+wprost) albo **Windows** przez Wine — wybieranych przy pierwszym starcie i zmienialnych
+przyciskiem **Wersja klienta…** (lewy dół). Wybór zapisany jest w `launcher.local.json`
+(`"mode": "native"` albo `"wine"`).
+
+Jeśli natywny klient się nie uruchamia, to prawie zawsze brak biblioteki runtime.
+Zainstaluj zależności:
+
+```sh
+sudo apt install libturbojpeg0 libglu1-mesa libglvnd0
+```
+
+Dalej nie działa? Przełącz na **Klienta Windows przez Wine** przyciskiem **Wersja
+klienta…** — to inny klient, który na wielu systemach startuje łatwiej. Pobrany
+natywny `Main` dostaje bit wykonywalny automatycznie po aktualizacji, więc brak tego
+bitu nie jest tu przyczyną.
 
 ## Wybór prefixu lub binarki Wine (Linux)
 
@@ -53,7 +72,9 @@ launchera plik `launcher.local.json`:
 ```
 
 Oba pola są opcjonalne. Plik jest lokalny dla maszyny i nigdy nie jest pobierany
-ani nadpisywany przez updater.
+ani nadpisywany przez updater. Dotyczą one wyłącznie **klienta Windows przez Wine**
+— natywny klient Linux je ignoruje i uruchamia `./Main` wprost. Ten sam plik
+przechowuje też wybór klienta (`"mode": "native"` albo `"wine"`).
 
 ## Linux: ramka / rogi okna wyglądają źle
 

@@ -38,6 +38,20 @@ player's own files): `config.ini`, `*.log`, `imgui.ini`, and the manifest itself
 
 The launcher only adds and updates files listed here; it never deletes anything.
 
+## `version-linux.json` — native Linux client manifest
+
+Optional second manifest, in the **same format** as `version.json` and produced by
+the same generator (`build.sh manifest --input <dir> --output <dir>/version-linux.json`).
+It lists the **native Linux client** — the bare `Main` ELF and
+`MUnique.Client.Library.so` — in place of `Main.exe` and its Windows DLLs; the
+`Data/` entries are otherwise the same.
+
+Those `Data/` entries share the exact paths **and hashes** with `version.json`, so a
+player who already has the assets (e.g. from the Wine client) downloads only the two
+native binaries when switching. Keep the shared files byte-identical between the two
+manifests — if a `Data/` file differs, it re-downloads on every native↔Wine switch.
+See [Releasing updates](releasing-updates.md).
+
 ## `launcher.json` — launcher manifest
 
 Describes the latest launcher build, one binary per runtime identifier.

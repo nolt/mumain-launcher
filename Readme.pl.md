@@ -22,6 +22,11 @@ jest konfigurowalne; zobacz [Wygląd / branding](docs/branding.pl.md).*
 Launcher nigdy nie usuwa lokalnych plików; tylko dodaje i aktualizuje. Pliki
 takie jak `config.ini`, logi i cache pozostają nietknięte.
 
+Na Linuksie gracz wybiera raz, w launcherze, między klientem **natywnym**
+(`Main` + `.so`, z `version-linux.json`) uruchamianym wprost a klientem **Windows**
+przez Wine (z `version.json`). Oba współdzielą assety `Data/`, więc przełączenie
+dociąga tylko różniące się binarki. Zobacz [Przewodnik gracza](docs/player-guide.pl.md).
+
 ## Projekty
 
 | Projekt          | Rola                                                                       |
@@ -66,11 +71,11 @@ Pełny przewodnik: **[Budowanie i wyciąganie](docs/building.pl.md)**.
 - **[Wydawanie aktualizacji](docs/releasing-updates.pl.md)** — workflow admina:
   adresy patchy, wydanie aktualizacji klienta, wydanie nowego launchera, układ
   katalogów na serwerze.
-- **[Format manifestu](docs/manifest-format.pl.md)** — referencja `version.json`
-  i `launcher.json`.
+- **[Format manifestu](docs/manifest-format.pl.md)** — referencja `version.json`,
+  `version-linux.json` i `launcher.json`.
 - **[Przewodnik gracza](docs/player-guide.pl.md)** — jak gracz instaluje i uruchamia.
-- **[Rozwiązywanie problemów](docs/troubleshooting.pl.md)** — pułapki Wine, Linux
-  i pakowania.
+- **[Rozwiązywanie problemów](docs/troubleshooting.pl.md)** — klient natywny,
+  pułapki Wine, Linux i pakowania.
 
 ## Roadmap
 

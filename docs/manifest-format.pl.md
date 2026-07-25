@@ -38,6 +38,19 @@ plików gracza): `config.ini`, `*.log`, `imgui.ini` oraz sam manifest.
 
 Launcher tylko dodaje i aktualizuje pliki z tej listy; nigdy nic nie usuwa.
 
+## `version-linux.json` — manifest natywnego klienta Linux
+
+Opcjonalny drugi manifest, w **tym samym formacie** co `version.json` i tworzony
+tym samym generatorem (`build.sh manifest --input <kat> --output <kat>/version-linux.json`).
+Wymienia **natywnego klienta Linux** — goły ELF `Main` i `MUnique.Client.Library.so`
+— zamiast `Main.exe` i jego windowsowych DLL-i; wpisy `Data/` są poza tym takie same.
+
+Te wpisy `Data/` mają identyczne ścieżki **i hashe** jak w `version.json`, więc gracz,
+który ma już assety (np. z klienta Wine), przy przełączeniu pobiera tylko dwie natywne
+binarki. Trzymaj wspólne pliki bit-w-bit identyczne między manifestami — jeśli plik
+`Data/` się różni, będzie się pobierał przy każdym przełączeniu natywny↔Wine. Zobacz
+[Wydawanie aktualizacji](releasing-updates.pl.md).
+
 ## `launcher.json` — manifest launchera
 
 Opisuje najnowszy build launchera, jedna binarka na identyfikator środowiska.
