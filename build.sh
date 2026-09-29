@@ -8,6 +8,7 @@
 #   ./build.sh manifest ARGS...    # run the manifest generator with ARGS
 #   ./build.sh publish [VERSION] # publish self-contained launcher for win-x64 + linux-x64
 #                                #   (VERSION defaults to today's date) and write launcher.json
+#   ./build.sh licenses          # regenerate THIRD-PARTY-LICENSES.md (after changing packages)
 #   ./build.sh <dotnet args...>    # passthrough: run any dotnet command in the container
 #
 # Name the distributable launcher per server, either by editing LAUNCHER_NAME
@@ -144,6 +145,17 @@ case "$cmd" in
         write_launcher_manifest "$version"
         write_linux_desktop_kit
         echo "==> out/launcher/: ${LAUNCHER_NAME}.exe, ${LAUNCHER_NAME}, launcher.json, icon.png, install-linux.sh (version $version)"
+        ;;
+    licenses)
+        # Restore each published RID (Release, self-contained) so the assets files
+        # list exactly what publish ships, runtime packs included.
+        run bash -c '
+            set -e
+            for rid in '"${RIDS[*]}"'; do
+                dotnet restore src/Launcher.App -r "$rid" -p:Configuration=Release -p:SelfContained=true -v q
+                cp src/Launcher.App/obj/project.assets.json "/tmp/assets-$rid.json"
+            done
+            dotnet run tools/licenses/ThirdPartyLicenses.cs -- THIRD-PARTY-LICENSES.md /tmp/assets-*.json'
         ;;
     *)
         run dotnet "$@"

@@ -23,12 +23,16 @@ build outputs appear in your working tree as if built locally.
 ./build.sh                    # build the whole solution (Release) — a quick sanity check
 ./build.sh publish [VERSION]  # self-contained launcher binaries → ./out (see below)
 ./build.sh manifest ARGS…     # run the client manifest generator (see releasing-updates.md)
+./build.sh licenses           # regenerate THIRD-PARTY-LICENSES.md (after changing NuGet packages)
 ./build.sh <dotnet args…>     # passthrough, e.g. ./build.sh dotnet test
 ```
 
 - `VERSION` defaults to today's date (`yyyy.MM.dd`). It is stamped into the
   binaries and written into `launcher.json`, so self-update can compare versions.
 - Run from the repository root (the folder containing `build.sh`).
+- `THIRD-PARTY-LICENSES.md` is compiled into the launcher (About → Licenses). Run
+  `./build.sh licenses` after adding or updating a package and commit the result;
+  texts no package carries (the Inter font's OFL) live in `tools/licenses/`.
 
 ## What `publish` produces
 

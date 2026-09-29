@@ -24,12 +24,16 @@ budowania pojawiają się w Twoim drzewie roboczym, jakby budowane lokalnie.
 ./build.sh                    # zbuduj całe rozwiązanie (Release) — szybki test poprawności
 ./build.sh publish [WERSJA]   # samodzielne binarki launchera → ./out (patrz niżej)
 ./build.sh manifest ARGI…     # generator manifestu klienta (patrz releasing-updates)
+./build.sh licenses           # wygeneruj na nowo THIRD-PARTY-LICENSES.md (po zmianie pakietów NuGet)
 ./build.sh <argumenty dotnet> # przekazanie, np. ./build.sh dotnet test
 ```
 
 - `WERSJA` domyślnie = dzisiejsza data (`yyyy.MM.dd`). Jest wpisywana w binarki
   i do `launcher.json`, dzięki czemu samo-aktualizacja może porównywać wersje.
 - Uruchamiaj z katalogu głównego repo (tam, gdzie `build.sh`).
+- `THIRD-PARTY-LICENSES.md` jest wkompilowany w launcher (O programie → Licencje).
+  Po dodaniu lub aktualizacji pakietu uruchom `./build.sh licenses` i zacommituj wynik;
+  teksty, których nie niesie żaden pakiet (OFL fontu Inter), leżą w `tools/licenses/`.
 
 ## Co tworzy `publish`
 
