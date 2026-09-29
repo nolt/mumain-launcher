@@ -82,7 +82,12 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for status and optional future work.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Use, modify and redistribute it freely; just keep
-the copyright and licence notice in copies and forks.
+- **Launcher.** MIT — see [LICENSE](LICENSE). Use, modify and redistribute it
+  freely; just keep the copyright and licence notice in copies and forks.
+- **Dependencies.** .NET runtime, Avalonia, SkiaSharp, HarfBuzzSharp and the rest
+  are MIT or BSD-style; the Inter font is SIL Open Font License. Full texts in
+  [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md). The launcher carries that file
+  and its own `LICENSE` inside the binary (About → Licenses), so nothing has to be
+  shipped next to it.
 
 Original author: [nolt](https://github.com/nolt).

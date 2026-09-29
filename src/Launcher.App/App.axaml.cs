@@ -58,6 +58,7 @@ public partial class App : Application
         var viewModel = new MainWindowViewModel(
             updaterFactory, launcherFactory, clientModeStore, isWindows,
             selfUpdater, clientConfig,
+            LauncherConfig.CurrentLauncherVersion,
             window.Close,
             () => LauncherRestart.RestartTo(LauncherConfig.CurrentExecutablePath));
         window.DataContext = viewModel;

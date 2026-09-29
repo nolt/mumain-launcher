@@ -45,6 +45,9 @@
     <x:String x:Key="UiMusic">Music</x:String>
     <x:String x:Key="UiSave">Save</x:String>
     <x:String x:Key="UiCancel">Cancel</x:String>
+    <x:String x:Key="UiAbout">About</x:String>
+    <x:String x:Key="UiVersion">Version</x:String>
+    <x:String x:Key="UiLicenses">Licenses</x:String>
     <!-- Client-type chooser (Linux only) -->
     <x:String x:Key="UiChangeClient">Client version…</x:String>
     <x:String x:Key="UiClientChoiceTitle">CHOOSE YOUR CLIENT</x:String>

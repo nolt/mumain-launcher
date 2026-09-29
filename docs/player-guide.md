@@ -26,6 +26,9 @@ the changes apply the next time you start the client.
 The launcher only edits those settings in the client's `config.ini` — it never
 touches your server connection or saved login.
 
+The **i icon** next to the gear shows the launcher version and, under
+**Licenses**, the licenses of the launcher and every component it contains.
+
 ## Windows
 
 Double-click `MumainLauncher.exe`. When the update finishes, click **PLAY**; the

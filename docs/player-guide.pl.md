@@ -26,6 +26,9 @@ Kliknij **ikonę koła zębatego** w lewym górnym rogu, aby zmienić
 Launcher edytuje tylko te ustawienia w pliku `config.ini` klienta — nie rusza
 połączenia z serwerem ani zapamiętanego logowania.
 
+**Ikona „i”** obok koła zębatego pokazuje wersję launchera, a pod **Licencje** —
+licencje launchera i wszystkich składników, które zawiera.
+
 ## Windows
 
 Kliknij dwukrotnie `MumainLauncher.exe`. Po zakończeniu aktualizacji kliknij

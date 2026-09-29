@@ -33,6 +33,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     private bool _canPlay;
     private bool _canRetry;
     private bool _isSettingsOpen;
+    private bool _isAboutOpen;
     private bool _isClientChoiceOpen;
     private bool _canCancelClientChoice;
 
@@ -43,6 +44,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         bool isWindows,
         LauncherSelfUpdater selfUpdater,
         ClientConfig clientConfig,
+        string launcherVersion,
         Action closeWindow,
         Action restart)
     {
@@ -57,6 +59,8 @@ public sealed class MainWindowViewModel : ViewModelBase
         RetryCommand = new RelayCommand(() => _ = RunUpdateAsync(), () => CanRetry);
         Settings = new SettingsViewModel(clientConfig, () => IsSettingsOpen = false);
         OpenSettingsCommand = new RelayCommand(OpenSettings);
+        About = new AboutViewModel(launcherVersion, () => IsAboutOpen = false);
+        OpenAboutCommand = new RelayCommand(OpenAbout);
         ChooseNativeCommand = new RelayCommand(() => OnClientChosen(ClientMode.Native));
         ChooseWineCommand = new RelayCommand(() => OnClientChosen(ClientMode.Wine));
         ChangeClientCommand = new RelayCommand(OpenClientChoice);
@@ -69,6 +73,8 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     public RelayCommand OpenSettingsCommand { get; }
 
+    public RelayCommand OpenAboutCommand { get; }
+
     public RelayCommand ChooseNativeCommand { get; }
 
     public RelayCommand ChooseWineCommand { get; }
@@ -79,10 +85,18 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     public SettingsViewModel Settings { get; }
 
+    public AboutViewModel About { get; }
+
     public bool IsSettingsOpen
     {
         get => _isSettingsOpen;
         private set => SetField(ref _isSettingsOpen, value);
+    }
+
+    public bool IsAboutOpen
+    {
+        get => _isAboutOpen;
+        private set => SetField(ref _isAboutOpen, value);
     }
 
     /// <summary>Whether the client-type (native vs Wine) chooser overlay is showing.</summary>
@@ -298,6 +312,12 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         Settings.Load();
         IsSettingsOpen = true;
+    }
+
+    private void OpenAbout()
+    {
+        About.Reset();
+        IsAboutOpen = true;
     }
 
     private void Play()

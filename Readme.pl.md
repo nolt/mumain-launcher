@@ -83,7 +83,11 @@ Status i opcjonalne dalsze prace: [docs/ROADMAP.md](docs/ROADMAP.md) *(w języku
 
 ## Licencja
 
-MIT — zobacz [LICENSE](LICENSE). Używaj, modyfikuj i rozpowszechniaj dowolnie;
-zachowaj jedynie notkę o prawach autorskich i licencji w kopiach i forkach.
+- **Launcher.** MIT — zobacz [LICENSE](LICENSE). Używaj, modyfikuj i rozpowszechniaj
+  dowolnie; zachowaj jedynie notkę o prawach autorskich i licencji w kopiach i forkach.
+- **Zależności.** Runtime .NET, Avalonia, SkiaSharp, HarfBuzzSharp i reszta są na MIT
+  lub licencjach typu BSD; font Inter na SIL Open Font License. Pełne teksty
+  w [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md). Launcher ma ten plik i własny
+  `LICENSE` wbudowane (O programie → Licencje), więc nic nie trzeba dołączać obok.
 
 Autor oryginalny: [nolt](https://github.com/nolt).
