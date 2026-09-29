@@ -90,4 +90,4 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for status and optional future work.
   and its own `LICENSE` inside the binary (About → Licenses), so nothing has to be
   shipped next to it.
 
-Original author: [nolt](https://github.com/nolt).
+Original author: [Nolt](https://github.com/nolt).
