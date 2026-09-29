@@ -90,4 +90,4 @@ Status i opcjonalne dalsze prace: [docs/ROADMAP.md](docs/ROADMAP.md) *(w języku
   w [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md). Launcher ma ten plik i własny
   `LICENSE` wbudowane (O programie → Licencje), więc nic nie trzeba dołączać obok.
 
-Autor oryginalny: [nolt](https://github.com/nolt).
+Autor oryginalny: [Nolt](https://github.com/nolt).
